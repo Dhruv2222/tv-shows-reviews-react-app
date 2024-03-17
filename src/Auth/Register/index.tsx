@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Register() {
 
     return (
-    <>
+    // <>
     
     
     <div className="container">
@@ -40,7 +40,7 @@ function Register() {
     </div>
     
     
-    </>
+    // </>
     );
     
     }
