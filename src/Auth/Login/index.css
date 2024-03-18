@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-image: url('../images/abc.jpeg');
+    background-image: url('../images/backgrnd.jpeg');
+    /* image source: https://wallpapers.com/tv-shows-background */
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -14,10 +15,11 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    width: 50%!important;
 }
 
 h1 {
@@ -43,16 +45,18 @@ input[type="password"] {
 
 button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #ff6200cb;
+    border-style: solid;
     color: #fff;
-    border: none;
-    border-radius: 5px;
+    border: #ff4400;
+    border-style: solid;
+    border-radius: 10px!important;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #ff4400;
 }
 
 a {

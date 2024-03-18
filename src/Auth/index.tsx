@@ -13,7 +13,7 @@ function Auth() {
     <div>
       <Routes>
         <Route path="/"
-         element={<Navigate to="Register" />}/>
+         element={<Navigate to="Login" />}/>
          <Route path="Login"
          element={<Login />}/>
         <Route path="Register"

@@ -17,7 +17,8 @@ function Login() {
     return (
         <>
             <div className="container">
-                <h1>Login Form</h1>
+                <h2>Login</h2>
+                <hr/>
                 <form onSubmit={handleLogin}>
                     <div className="form-group">
                         <label htmlFor="username">Username:</label>
@@ -30,7 +31,7 @@ function Login() {
                     </div>
 
                     <div className="form-group">
-                        <button type="submit">Login</button>
+                        <button type="submit"><b>Login</b></button>
                     </div>
                 </form>
                 <Link to={"/Auth/Register"}>Don't have an account? Register</Link>
