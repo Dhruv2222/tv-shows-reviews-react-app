@@ -3,6 +3,7 @@ import './App.css';
 import { HashRouter } from "react-router-dom";
 import { Routes, Route, Navigate } from "react-router";
 import Auth from './Auth';
+import Landing from './Landing';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/Auth" />} />
           <Route path="/Auth/*" element={<Auth />} />
+          <Route path="/Landing/*" element={<Landing />} />
         </Routes>
       </div>
     </HashRouter>
