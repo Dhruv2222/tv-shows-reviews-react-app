@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: none;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.container-1 {
+  text-align: center; /* Center align the text */
+  padding: 20px; /* Add padding around the content inside the container */
+  background-color: #f0f0f0; /* Add a light background color */
+  margin-top: 4.2%;
+}
+
+.container-1 h2 {
+  font-size: 36px; /* Adjust the font size for the main title */
+  font-family: Arial, sans-serif; /* Set the font family */
+  color: #333; /* Set the color of the main title */
+}
+
+.container-1 h4 {
+  font-size: 20px; /* Adjust the font size for the subtitle */
+  font-family: Arial, sans-serif; /* Set the font family */
+  color: #666; /* Set the color of the subtitle */
+}
