@@ -46,9 +46,12 @@ function Home() {
                 show: { image: string; title: string; summary: string },
                 index: number
               ) => (
-                <div className="col" key={index}>
+                <div
+                  className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
+                  key={index}
+                >
                   <div
-                    className="card"
+                    className="card h-100"
                     style={{ width: "18rem", height: "100%" }}
                   >
                     <img
