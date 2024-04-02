@@ -31,7 +31,7 @@ function Login() {
             return;
         }
         setUser({ ...user, ...newUser});
-        navigate("/Landing/LandingPage");
+        navigate("/Home");
       }
 
       const navigate = useNavigate();

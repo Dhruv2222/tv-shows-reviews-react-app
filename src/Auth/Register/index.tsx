@@ -22,7 +22,7 @@ function Register() {
   const register = async () => {
     const newUser = await client.registerUser(user);
     setUser({ ...user, ...newUser });
-    navigate("/Landing/LandingPage");
+    navigate("/Home");
   };
 
   const [adminPin, setAdminPin] = useState("");
@@ -69,7 +69,7 @@ function Register() {
     <div className="container">
   <h2>Register now!</h2>
   <hr />
-  <form className="row">
+  <form onSubmit={handleRegister} className="row">
     <div className="col-md-6">
       {/* Left Column */}
       <div className="form-group">
@@ -199,7 +199,7 @@ function Register() {
       )}
     </div>
     <div className="form-group col-md-12">
-      <button onClick={handleRegister}>
+      <button type="submit">
         <b>Register</b>
       </button>
     </div>
