@@ -3,6 +3,8 @@ import './App.css';
 import { HashRouter } from "react-router-dom";
 import { Routes, Route, Navigate } from "react-router";
 import Auth from './Auth';
+
+import Profile from './Profile';
 import Landing from './Landing';
 import Home from './Home';
 import { Provider } from 'react-redux';
@@ -17,10 +19,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/Home" />} />
           <Route path="/Auth/*" element={<Auth />} />
+          <Route path="/Profile/:profileId" element={<Profile />} />
           <Route path="/Landing/*" element={<Landing />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Details/:showId" element={<Details />} />
-
         </Routes>
         </Provider>
       </div>

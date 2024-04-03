@@ -1,0 +1,28 @@
+[
+    {
+        "_id": "Deril",
+        "role": "User",
+        "name": "Deril Raju",
+        "email": "derilraju@gmail.com",
+        "phone": "999-999-9999",
+        "address": "26 School St, Roxbury, MA",
+        "reviews": [
+            {
+                "id": "1",
+                "date": "24 February 2024",
+                "time": "08:17",
+                "tvshow_id": "Breaking Bad",
+                "heading": "Review Heading",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis."
+            },
+            {
+                "id": "2",
+                "date": "01 January 2024",
+                "time": "02:17",
+                "tvshow_id": "Game of Thrones",
+                "heading": "Review Heading",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis."
+            }
+        ]
+    }
+]
