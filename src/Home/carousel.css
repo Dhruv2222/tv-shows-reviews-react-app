@@ -1,0 +1,9 @@
+#AutoplayingCarousel {
+  max-width: 30%; /* Adjust this value as needed */
+  margin: auto; /* Center the carousel horizontally */
+}
+
+#AutoplayingCarousel .carousel-inner .carousel-item img {
+  max-height: 600px; /* Adjust this value as needed */
+  object-fit: cover; /* Maintain aspect ratio and cover the entire area */
+}
