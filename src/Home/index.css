@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: none!important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.container-1 {
+  text-align: center; /* Center align the text */
+  padding: 20px; /* Add padding around the content inside the container */
+  /* background-color: #f0f0f0; Add a light background color */
+  margin-top: 4.2%;
+}
+
+.container-1 h2 {
+  font-size: 36px; /* Adjust the font size for the main title */
+  font-family: Arial, sans-serif; /* Set the font family */
+  color: #333; /* Set the color of the main title */
+}
+
+.container-1 h4 {
+  font-size: 20px; /* Adjust the font size for the subtitle */
+  font-family: Arial, sans-serif; /* Set the font family */
+  color: #666; /* Set the color of the subtitle */
+}
+
+
+
+.navbar-login-btn {
+  padding: 10px 20px;
+  background-color: #f2bf9fcb;
+  border-style: solid;
+  color: black;
+  border: #ff4400;
+  border-style: solid;
+  border-radius: 10px!important;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-login-btn:hover {
+  background-color: #ff4400;
+
+}
+
+.navbar-search-btn {
+  padding: 10px 20px;
+  background-color: #f2bf9fcb;
+  border-style: solid;
+  color: black;
+  border: #ff4400;
+  border-style: solid;
+  border-radius: 10px!important;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-search-btn:hover {
+  background-color: #ff4400;
+}
+
+.navbar-logout-btn {
+  padding: 10px 20px;
+  background-color: #f2bf9fcb;
+  border-style: solid;
+  color: black;
+  border: #ff4400;
+  border-style: solid;
+  border-radius: 10px!important;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-logout-btn:hover {
+  background-color: #ff0000;
+}
+
+.navbar-title {
+  color: white;
+  font-size: 25px;
+}
+
+.navbar-title:hover {
+  text-decoration:none;
+  color: #ff4400!important;
+  font-size: 25px;
+  
+}
+
+.navbar-icon {
+  font-size: 40px;
+  color: #ff4400;
+}
+
+.card-text {
+  color: black;
+  text-decoration: none;
+}
+
+.card-text:hover {
+  color: black!important;
+  text-decoration: none;
+  text-shadow: #333;
+  /* font-weight: bold; */
+}
+
+.card-text-inner {
+  color: gray;
+  text-decoration: none;
+}
+
+.home-show-more-btn {
+
+  padding: 1px 2px;
+  background-color: white;
+  color: gray!important;
+  text-decoration: underline;
+  border-style: none;
+  color: black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+
+.home-show-more-btn:hover {
+  background-color:  #f2bf9fcb;
+}
+
+.card {
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}

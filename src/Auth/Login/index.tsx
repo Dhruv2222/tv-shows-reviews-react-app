@@ -1,17 +1,48 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
+import * as client from "../client";
+import Landing from '../../Landing';
 
 function Login() {
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
+    const [user, setUser] = useState({
+        "_id": "",
+        "username": "",
+        "password": "",
+        "confirmPassword": "",
+        "email": "",
+        "phone_number": "",
+        "dob": "",
+        "role": "user",
+        "favorite_TVshow": ""
+      });
+
     const [loggedIn, setLoggedIn] = useState(false);
+
+    const login = async () => {
+        const newUser = await client.loginUser(user);
+        if (newUser === "Invalid credentials") {
+            // 401 (Unauthorized), show alert for login failure
+            alert('Login failed: Invalid credentials');
+            navigate("/Auth/Login");
+            return;
+        }
+        setUser({ ...user, ...newUser});
+        navigate("/Home");
+      }
+
+      const navigate = useNavigate();
+
     const handleLogin = (event: any) => {
         event.preventDefault();
-        console.log('Username:', username);
-        console.log('Password:', password);
+        // console.log('Username:', user.username);
+        // console.log('Password:', user.password);
         setLoggedIn(true); 
+        login();
+        
     }
 
     return (
@@ -22,12 +53,12 @@ function Login() {
                 <form onSubmit={handleLogin}>
                     <div className="form-group">
                         <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        <input type="text" placeholder="Enter your username" id="username" name="username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value})} required />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <input type="password" placeholder="Enter your password" id="password" name="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value})} required />
                     </div>
 
                     <div className="form-group">
