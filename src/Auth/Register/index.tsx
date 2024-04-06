@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import * as client from "../client";
+import Navbar from "../../Home/navbar";
 
 function Register() {
   const ADMIN_PIN = process.env.REACT_APP_ADMIN_PIN;
@@ -66,7 +67,9 @@ function Register() {
   };
 
   return (
-    <div className="container">
+    <>
+    <Navbar/>
+    <div className="containerForRegister">
   <h2>Register now!</h2>
   <hr />
   <form onSubmit={handleRegister} className="row">
@@ -208,7 +211,7 @@ function Register() {
     <Link to={"/Auth/Login"}>Already have an account? Login</Link>
   </div>
 </div>
-
+</>
 
   );
 }

@@ -106,7 +106,7 @@ function Home() {
                 >
                   {/* <Link to={`/Details/${showId}`}> */}
                   <div
-                    className="card"
+                    className="card home-card"
                     style={{ width: "18rem", height: "100%" }}
                   >
                     <Link className="card-text" to={`/Details/${show.id}`}>
