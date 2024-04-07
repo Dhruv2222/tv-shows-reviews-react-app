@@ -33,6 +33,7 @@ function Home() {
       setLoggedIn(false);
       return;
     } else {
+      console.log("HEREEE", currentUser)
       setUser({ ...user, ...currentUser });
       setLoggedIn(true);
     }
@@ -83,10 +84,10 @@ function Home() {
     <>
       <Navbar />
       <div className="main-content">
-      {loggedIn === true && (
-            <div>
-            <h2 style={{marginTop: '80px', marginLeft: '20px', textAlign: 'center'}}><b>Welcome, {user.username}</b></h2>
-        </div>
+        {loggedIn === true && (
+          <div>
+            <h2 style={{ marginTop: '80px', marginLeft: '20px', textAlign: 'center' }}><b>Welcome, {user.username}</b></h2>
+          </div>
         )}
         <div className="container-1">
           <div className="row row-cols-1 row-cols-md-4 g-4">

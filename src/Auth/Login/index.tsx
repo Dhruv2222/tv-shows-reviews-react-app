@@ -18,7 +18,7 @@ function Login() {
         "dob": "",
         "role": "user",
         "favorite_TVshow": ""
-      });
+    });
 
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -30,35 +30,34 @@ function Login() {
             navigate("/Auth/Login");
             return;
         }
-        setUser({ ...user, ...newUser});
+        setUser({ ...user, ...newUser });
         navigate("/Home");
-      }
+    }
 
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleLogin = (event: any) => {
         event.preventDefault();
         // console.log('Username:', user.username);
         // console.log('Password:', user.password);
-        setLoggedIn(true); 
+        setLoggedIn(true);
         login();
-        
     }
 
     return (
         <>
-            <div className="container">
+            <div className="container container-style">
                 <h2>Login</h2>
-                <hr/>
+                <hr />
                 <form onSubmit={handleLogin}>
                     <div className="form-group">
                         <label htmlFor="username">Username:</label>
-                        <input type="text" placeholder="Enter your username" id="username" name="username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value})} required />
+                        <input type="text" placeholder="Enter your username" id="username" name="username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })} required />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
-                        <input type="password" placeholder="Enter your password" id="password" name="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value})} required />
+                        <input type="password" placeholder="Enter your password" id="password" name="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} required />
                     </div>
 
                     <div className="form-group">

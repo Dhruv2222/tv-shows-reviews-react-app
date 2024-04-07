@@ -11,13 +11,13 @@ interface User {
 }
 
 interface Review {
-    _id: string,
-    user_id: string,
-    review_tvshow: string,
-    review_heading: string,
-    review_description: string,
-    review_date: string,
-    review_time: string,
+    _id: string;
+    username: string;
+    review_description: string;
+    review_timestamp: string;
+    review_title: string;
+    showId: number;
+    rating: number;
 }
 
 const request = axios.create({
@@ -31,7 +31,8 @@ export const fetchUserById = async (id: String | undefined) => {
 }
 
 export const fetchReviewsById = async (id: String | undefined) => {
-    const response = await request.get(`/reviews/${id}`);
+    const response = await request.get(`/users/reviews/${id}`);
+    console.log("hello", response.data)
     return response.data;
 }
 
