@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./index.css"
 import * as client from "./client";
+import * as client_home from "../Home/client"
 import { MdDelete } from "react-icons/md";
 import { Button, Modal } from "react-bootstrap";
-import * as client_home from "../Home/client";
 import Navbar from "../Home/navbar";
 import { RiContactsBookLine } from "react-icons/ri";
 
@@ -19,6 +19,7 @@ interface Review {
 }
 
 function Profile() {
+    const navigate = useNavigate();
     const { profileId } = useParams();
     const [isOwnPage, setIsOwnPage] = useState(true);
 
@@ -31,6 +32,17 @@ function Profile() {
             .catch((error) => {
                 console.error('Failed to update user', error);
             });
+    };
+
+    const handleDeleteAccount = () => {
+        try {
+            client_home.logoutUser();
+            client.deleteUser(loggedInUser.username);
+            console.log(`User ID ${loggedInUser.username} deleted successfully.`);
+            navigate("/#/Home");
+        } catch (error) {
+            console.error('Failed to delete user:', error);
+        }
     };
 
     function formatDate(dateString: string): string {
@@ -258,15 +270,21 @@ function Profile() {
                                                     <input type="text" className="form-control" value={editUser.favorite_TVshow} onChange={(e) => setEditUser({ ...editUser, favorite_TVshow: e.target.value })} />
                                                 </div>
                                             </div>
-                                            <div className="row">
+
+                                            {profileId === undefined && (<div className="row">
                                                 <div className="col-sm-3"></div>
                                                 <div className="col-sm-9 text-secondary d-flex justify-content-end ">
-                                                    <button onClick={handleSave} className="btn btn-primary px-4">
+                                                    <button onClick={handleSave} className="btn btn-primary px-4 me-2">
                                                         Save Changes
                                                     </button>
+
+                                                    <button onClick={handleDeleteAccount} className="btn btn-danger px-4">
+                                                        Delete your Account
+                                                    </button>
+
                                                 </div>
 
-                                            </div>
+                                            </div>)}
                                         </div>
                                     </div>
                                 </div>

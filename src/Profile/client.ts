@@ -52,3 +52,8 @@ export const updateReview = async (review: Review) => {
     const response = await request.put(`/reviews/${review._id}`, review);
     return response.data;
 }
+
+export const deleteUser = async (id: String | undefined) => {
+    const response = await request.delete(`/users/${id}`);
+    return response.data;
+}
