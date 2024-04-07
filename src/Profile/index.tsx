@@ -3,10 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./index.css"
 import * as client from "./client";
 import * as client_home from "../Home/client"
-import { MdDelete } from "react-icons/md";
 import { Button, Modal } from "react-bootstrap";
 import Navbar from "../Home/navbar";
-import { RiContactsBookLine } from "react-icons/ri";
 
 interface Review {
     _id: string;
@@ -223,8 +221,8 @@ function Profile() {
                         <h1 style={{ textAlign: 'center' }}>{profileId ? `${user.username}'s Profile` : "My Profile"}</h1>
                         <div className="col-lg-12 mt-4">
                             <div className="card">
-                                <div className="card-body d-flex flex-row">
-                                    <div className="col-lg-4 d-flex flex-column align-items-center text-center">
+                                <div className="card-body d-lg-flex flex-row d-block">
+                                    <div className="col-lg-4 col-12 d-flex flex-column align-items-center text-center">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Admin" className="rounded-circle p-1 bg-primary" width="110" />
                                         <div className="mt-3">
                                             <h4>{user.username}</h4>
@@ -235,7 +233,7 @@ function Profile() {
                                         </div>
 
                                     </div>
-                                    <div className="col-lg-8">
+                                    <div className="col-lg-8 col-12">
                                         <div className="mt-3" >
                                             <div className="row mb-3">
                                                 <div className="col-sm-3">
@@ -258,7 +256,7 @@ function Profile() {
                                                     <h6 className="mb-0">Phone</h6>
                                                 </div>
                                                 <div className="col-sm-9 text-secondary">
-                                                    <input disabled={profileId !== undefined} style={{ filter: profileId === undefined ? 'none' : 'blur(2px)' }} type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
+                                                    <input disabled={profileId !== undefined} style={{ filter: profileId === undefined ? 'none' : 'blur(4px)' }} type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
                                                 </div>
                                             </div>
 
@@ -303,9 +301,8 @@ function Profile() {
                                         {reviews.map((review: Review) => (
                                             <li key={parseInt(review._id)} >
                                                 <div className="timeline-time">
-
-                                                    <span className="date">{new Date(review.review_timestamp).toLocaleTimeString()}</span>
-                                                    <span className="time">{formatDate(new Date(review.review_timestamp).toLocaleDateString())}</span>
+                                                    <span className="date me-2">{new Date(review.review_timestamp).toLocaleTimeString()}</span>
+                                                    <span className="time me-2">{formatDate(new Date(review.review_timestamp).toLocaleDateString())}</span>
                                                 </div>
                                                 <div className="timeline-icon">
                                                     <a>&nbsp;</a>

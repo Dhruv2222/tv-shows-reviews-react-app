@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {

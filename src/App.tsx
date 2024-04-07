@@ -33,9 +33,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/Home" />} />
             <Route path="/Auth/*" element={<Auth />} />
-            {/* <Route path="/Profile/*" element={<Profile />} />
-            <Route path="/Profile/:profileId" element={<Profile />} /> */}
-            <Route path="/Profile/*" element={
+            <Route path="/Profile/*" element={<Profile />} />
+            <Route path="/Profile/:profileId" element={<Profile />} />
+            {/* <Route path="/Profile/*" element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile />
               </ProtectedRoute>
@@ -43,8 +43,8 @@ function App() {
             <Route path="/Profile/:profileId" element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile />
-              </ProtectedRoute>
-            } />
+              </ProtectedRoute> */}
+            {/* } /> */}
             <Route path="/Landing/*" element={<Landing />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/Details/:showId" element={<Details />} />
