@@ -32,6 +32,10 @@ function Profile() {
             });
     };
 
+    const handleDeleteAccountShow = () => {
+        setShowDeleteAccount(true);
+    }
+
     const handleDeleteAccount = () => {
         try {
             client_home.logoutUser();
@@ -145,6 +149,7 @@ function Profile() {
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const [showDeleteAccount, setShowDeleteAccount] = useState(false);
     const [selectedReviewId, setSelectedReviewId] = useState("");
     const [selectedReview, setSelectedReview] = useState({
         _id: "",
@@ -161,6 +166,7 @@ function Profile() {
         setSelectedReviewId(reviewId);
     };
 
+
     const handleEditShow = (review: Review) => {
         setShowEdit(true);
         setSelectedReview(review);
@@ -168,6 +174,10 @@ function Profile() {
 
     const handleDeleteClose = () => {
         setShowDelete(false);
+    }
+
+    const handleDeleteCloseAccount = () => {
+        setShowDeleteAccount(false);
     }
 
     const handleEditClose = () => {
@@ -276,7 +286,7 @@ function Profile() {
                                                         Save Changes
                                                     </button>
 
-                                                    <button onClick={handleDeleteAccount} className="btn btn-danger px-4">
+                                                    <button onClick={handleDeleteAccountShow} className="btn btn-danger px-4">
                                                         Delete your Account
                                                     </button>
 
@@ -354,6 +364,24 @@ function Profile() {
                             handleDeleteReview(selectedReviewId)
                         }}>
                             Delete Review
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={showDeleteAccount} onHide={handleDeleteCloseAccount}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Delete Your Profile</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to delete you account? (This cannot be undone)</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleDeleteCloseAccount}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => {
+                            handleDeleteCloseAccount();
+                            handleDeleteAccount();
+                        }}>
+                            Delete Account
                         </Button>
                     </Modal.Footer>
                 </Modal>
