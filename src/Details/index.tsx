@@ -11,11 +11,15 @@ import {
   getUserProfile,
   deleteReview,
   getAverageRating,
+  addToWishlist,
+  getUserWishlist,
+  removeFromWishlist,
 } from "./client";
-
 import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../Home/reviews";
 import { Link, useParams } from "react-router-dom";
+import { profile } from "console";
+
 
 function Details() {
   // const [shows, setShows] = useState();
@@ -31,10 +35,12 @@ function Details() {
     role: "user",
     favorite_TVshow: "",
   };
+  // console.log("hii")
   const [user, setUser] = useState(initialUserState);
   const [loggedIn, setLoggedIn] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
-
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  
   const fetchUserProfile = async () => {
     const currentUser = await getUserProfile();
     if (currentUser === "Not logged in") {
@@ -47,13 +53,56 @@ function Details() {
     }
   };
 
+  const [newWishList, setNewWishList] = useState({
+    _id: "",
+    username: "",
+    showId: 0,
+  });
+
   const getAvgShowRating = async () => {
     const avg = await getAverageRating(showId);
     setAvgRating(avg.averageRating);
     console.log(avgRating);
   };
 
+
+  const handleAddToWishlist = async () => {
+    try {
+      const newWishList = {
+        _id: '',
+        username: user.username,
+        showId: show.id
+      };
+  
+      await addToWishlist(newWishList);
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+    }
+  };
+
+  const handleWishlistAction = async () => {
+    try {
+      if (isInWishlist) {
+        // If show is already in wishlist, remove it
+        // const w_id = fetchWishlistByUsernameShow1(user.username, showId)
+        // console.log("fvsdfsv");
+        // console.log(w_id);
+        await removeFromWishlist(showId);
+        console.log("already in wishlist")
+        setIsInWishlist(false); // Update state
+      } else {
+        // If show is not in wishlist, add it
+        await addToWishlist({ _id: "", username: user.username, showId: show.id });
+        setIsInWishlist(true); // Update state
+      }
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
+      // Handle error
+    }
+  };  
+  
   const { showId } = useParams<{ showId?: string }>();
+  const { usernameWIsh } = useParams<{ usernameWIsh?: string }>();
 
   const shows = useSelector((state: any) => state.shows.shows);
 
@@ -99,6 +148,35 @@ function Details() {
     } catch (error) {}
   };
 
+  const fetchWishlistByUsername = async (username: any ) => {
+    try {
+      // console.log(username);
+      const wishlist = await getUserWishlist(username);
+      // console.log(wishlist);
+      return wishlist;
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      throw error; // Re-throw the error to handle it in the calling function if needed
+    }
+  };
+
+  const fetchWishlistByUsernameShow = async (username: any, showId: any) => {
+    try {
+      const wishlistData = await getUserWishlist(username);
+      // console.log(wishlistData, username, showId)
+      // wishlistData.forEach((item: any, index: number) => {
+      //   if (item.showId == showId){
+      //   // console.log(`Item ${index}:`, item.showId);}
+      // });
+      console.log("wishlist")
+      const wishlistItem = wishlistData.find((item: any) => item.showId == showId);
+      console.log(wishlistItem)
+      setIsInWishlist(wishlistItem !== undefined);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
   useEffect(() => {
     getShowById(showId, (show) => {
       setShow(show);
@@ -107,8 +185,12 @@ function Details() {
 
     fetchReviewsByShowId(showId);
     fetchUserProfile();
+    if (user.username) {
+      fetchWishlistByUsername(user.username);
+      fetchWishlistByUsernameShow(user.username, showId);
+    }
     getAvgShowRating();
-  }, []);
+  }, [user.username, showId]);
 
   const [expandedCards, setExpandedCards] = useState<{
     [key: number]: boolean;
@@ -148,6 +230,7 @@ function Details() {
     rating: 0,
   });
 
+
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setNewReview({
@@ -157,6 +240,7 @@ function Details() {
       review_timestamp: new Date(),
       username: user.username,
     });
+
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -165,6 +249,7 @@ function Details() {
     console.log(user);
 
     addNewReview(newReview);
+    // console.log("kkk")
     setNewReview({
       _id: "",
       username: "",
@@ -174,8 +259,11 @@ function Details() {
       review_timestamp: new Date(),
       rating: 0,
     });
-    window.location.reload();
+    console.log(user);
+    // window.location.reload();
   };
+
+  
 
   return (
     <>
@@ -287,7 +375,11 @@ function Details() {
           </div>
           <div>
             <hr />
-            <button>Add this show to my wishlist</button>
+            {/* {<button onClick={handleAddToWishlist}>Add this show to my wishlist</button> } */}
+            {loggedIn && (<button onClick={handleWishlistAction}>
+  {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+</button>) }
+
           </div>
         </div>
 
@@ -444,3 +536,4 @@ function Details() {
 }
 
 export default Details;
+
