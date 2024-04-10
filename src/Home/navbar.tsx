@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./navbar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { FaSearch } from "react-icons/fa";
 import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
@@ -19,6 +19,12 @@ function Navbar() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    setSearchQuery(searchParams.get("q") ?? "");
+  }, [location.search]);
 
   const handleNavigate = () => {
     navigate("/Auth/Login");
@@ -69,45 +75,14 @@ function Navbar() {
     getUserProfile();
   }, []);
 
-  function searchShows() {
+  async function searchShows() {
     if (searchQuery === "") {
       return;
     }
-    fetch(`http://api.tvmaze.com/search/shows?q=${searchQuery}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        data = data.map(
-          (show: {
-            show: {
-              id: any;
-              name: any;
-              image: { original: any };
-              summary: any;
-              avgRuntime: any;
-              status: any;
-              language: any;
-              premiered: any;
-              rating: { average: any };
-            };
-          }) => {
-            return {
-              id: show.show.id,
-              title: show.show.name,
-              image: show.show.image?.original,
-              summary: show.show.summary,
-              avgRuntime: show.show.avgRuntime,
-              status: show.show.status,
-              language: show.show.language,
-              premiered: show.show.premiered,
-              rating: show.show.rating?.average,
-            };
-          }
-        );
-        console.log(data);
-        dispatch(setShows(data));
-        navigate("/Home");
-      });
+    await client.search(searchQuery).then((response) => {
+      dispatch(setShows(response));
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    });
   }
 
   return (
@@ -131,11 +106,22 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                  <RiCameraLensFill className="navbar-icon" />
-                  <b><i className="navbar-title">TV Lens</i></b>
-                </a>
 
+                <a
+                  className="nav-link active"
+                  aria-current="page"
+                  href="#"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    textDecoration: "none",
+                  }}
+                >
+                  <RiCameraLensFill className="navbar-icon" />
+                  <b>
+                    <i className="navbar-title">TV Lens</i>
+                  </b>
+                </a>
 
               </li>
             </ul>
@@ -145,6 +131,7 @@ function Navbar() {
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={searchQuery}
                 style={{ width: "400px" }}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -165,6 +152,7 @@ function Navbar() {
               )}
 
               {loggedIn && (
+
                 <div><button
                   onClick={handleNavigateProfile}
                   className="navbar-logout-btn ms-2"
@@ -176,6 +164,7 @@ function Navbar() {
                 >
                     Logout <IoIosLogOut />
                   </button></div>
+
               )}
             </form>
           </div>

@@ -11,6 +11,8 @@ import Home from './Home';
 import { Provider } from 'react-redux';
 import store from './store';
 import Details from './Details';
+import Search from "./Home/search";
+
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -33,6 +35,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/Home" />} />
             <Route path="/Auth/*" element={<Auth />} />
+
             <Route path="/Profile/*" element={<Profile />} />
             <Route path="/Profile/:profileId" element={<Profile />} />
             {/* <Route path="/Profile/*" element={
@@ -48,6 +51,8 @@ function App() {
             <Route path="/Landing/*" element={<Landing />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/Details/:showId" element={<Details />} />
+        <Route path="/search" element={<Search />} />
+
           </Routes>
         </Provider>
       </div>

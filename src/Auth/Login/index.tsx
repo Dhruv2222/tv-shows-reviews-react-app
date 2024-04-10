@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import * as client from "../client";
 import Landing from '../../Landing';
+import Navbar from '../../Home/navbar';
 
 function Login() {
 
@@ -46,7 +47,10 @@ function Login() {
 
     return (
         <>
-            <div className="container container-style">
+
+        <Navbar/>
+            <div className="containerForLogin">
+
                 <h2>Login</h2>
                 <hr />
                 <form onSubmit={handleLogin}>
