@@ -72,25 +72,42 @@ function Home() {
 
   // Get the truncated content if needed
   const getTruncatedContent = (content: string) => {
-    const words = content.split(" ");
-    if (words.length > 50) {
-      return words.slice(0, 50).join(" ") + "...";
+    const words = content?.split(" ");
+    if (words?.length > 50) {
+      return words?.slice(0, 50).join(" ") + "...";
     }
     return content;
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const showsPerPage = 4;
+
+  const indexOfLastShow = currentPage * showsPerPage;
+  const indexOfFirstShow = indexOfLastShow - showsPerPage;
+  const currentShows = shows.slice(indexOfFirstShow, indexOfLastShow);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <>
       <Navbar />
       <div className="main-content">
-      {loggedIn === true && (
-            <div>
-            <h2 style={{marginTop: '80px', marginLeft: '20px', textAlign: 'center'}}><b>Welcome, {user.username}</b></h2>
-        </div>
+        {loggedIn === true && (
+          <div>
+            <h2
+              style={{
+                marginTop: "80px",
+                marginLeft: "20px",
+                textAlign: "center",
+              }}
+            >
+              <b>Welcome, {user.username}</b>
+            </h2>
+          </div>
         )}
         <div className="container-1">
           <div className="row row-cols-1 row-cols-md-4 g-4">
-            {shows.map(
+            {currentShows.map(
               (
                 show: {
                   id: number;
@@ -104,7 +121,6 @@ function Home() {
                   className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
                   key={index}
                 >
-                  {/* <Link to={`/Details/${showId}`}> */}
                   <div
                     className="card home-card"
                     style={{ width: "18rem", height: "100%" }}
@@ -132,21 +148,61 @@ function Home() {
                               : getTruncatedContent(show.summary),
                           }}
                         ></p>
-                        {/* Commenting out Show more option */}
-                        {/* {show.summary.split(" ").length > 50 && (
-                          <button className="home-show-more-btn" onClick={() => toggleContent(index)}>
-                            {expandedCards[index] ? "Collapse" : "Expand"}
-                          </button>
-                        )} */}
                       </div>
                     </Link>
                   </div>
-                  {/* </Link> */}
                 </div>
               )
             )}
           </div>
+          <ul className="pagination justify-content-center">
+            {/* Previous Button */}
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
+                onClick={() => paginate(currentPage - 1)}
+                className="page-link"
+              >
+                Previous
+              </button>
+            </li>
+
+            {/* Page Numbers */}
+            {Array(Math.ceil(shows.length / showsPerPage))
+              .fill(null)
+              .map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    onClick={() => paginate(index + 1)}
+                    className="page-link"
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+
+            {/* Next Button */}
+            <li
+              className={`page-item ${
+                currentPage === Math.ceil(shows.length / showsPerPage)
+                  ? "disabled"
+                  : ""
+              }`}
+            >
+              <button
+                onClick={() => paginate(currentPage + 1)}
+                className="page-link"
+              >
+                Next
+              </button>
+            </li>
+          </ul>
         </div>
+
         {loggedIn ? (
           <>
             <br />
@@ -161,7 +217,6 @@ function Home() {
           </>
         )}
       </div>
-      {/* <Carousel /> */}
     </>
   );
 }

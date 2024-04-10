@@ -18,3 +18,12 @@ export const getUserProfile = async () => {
         return "Not logged in";
     }
 }
+
+const searchRequest = axios.create({
+    baseURL: "http://localhost:4000/search"
+});
+
+export const search = async (searchQuery: string) => {
+    const response = await searchRequest.get("", { params: { q: searchQuery } });
+    return response.data;
+}
