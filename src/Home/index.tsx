@@ -33,6 +33,7 @@ function Home() {
       setLoggedIn(false);
       return;
     } else {
+      console.log("HEREEE", currentUser)
       setUser({ ...user, ...currentUser });
       setLoggedIn(true);
     }
@@ -94,6 +95,7 @@ function Home() {
       <div className="main-content">
         {loggedIn === true && (
           <div>
+
             <h2
               style={{
                 marginTop: "80px",
@@ -103,6 +105,7 @@ function Home() {
             >
               <b>Welcome, {user.username}</b>
             </h2>
+
           </div>
         )}
         <div className="container-1">
