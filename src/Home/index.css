@@ -129,10 +129,10 @@ body {
   background-color:  #f2bf9fcb;
 }
 
-.card {
+.home-card {
   transition: transform 0.3s;
 }
 
-.card:hover {
+.home-card:hover {
   transform: scale(1.05);
 }
