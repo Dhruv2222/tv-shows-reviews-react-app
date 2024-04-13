@@ -84,7 +84,7 @@ function Navbar() {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     });
   }
-
+  
   return (
     <>
       <nav
@@ -107,10 +107,12 @@ function Navbar() {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
 
-                <a
+                <Link
                   className="nav-link active"
                   aria-current="page"
-                  href="#"
+                  to="/Home"
+                  // remove the below onClick to make it not random
+                  onClick={() => { window.location.href = window.location.origin + '/#/Home'; window.location.reload(); }}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -121,7 +123,7 @@ function Navbar() {
                   <b>
                     <i className="navbar-title">TV Lens</i>
                   </b>
-                </a>
+                </Link>
 
               </li>
             </ul>

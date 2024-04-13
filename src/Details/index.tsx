@@ -20,7 +20,6 @@ import Reviews from "../Home/reviews";
 import { Link, useParams } from "react-router-dom";
 import { profile } from "console";
 
-
 function Details() {
   // const [shows, setShows] = useState();
 
@@ -40,7 +39,7 @@ function Details() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
   const [isInWishlist, setIsInWishlist] = useState(false);
-  
+
   const fetchUserProfile = async () => {
     const currentUser = await getUserProfile();
     if (currentUser === "Not logged in") {
@@ -65,15 +64,14 @@ function Details() {
     console.log(avgRating);
   };
 
-
   const handleAddToWishlist = async () => {
     try {
       const newWishList = {
-        _id: '',
+        _id: "",
         username: user.username,
-        showId: show.id
+        showId: show.id,
       };
-  
+
       await addToWishlist(newWishList);
     } catch (error) {
       console.error("Error adding to wishlist:", error);
@@ -88,19 +86,23 @@ function Details() {
         // console.log("fvsdfsv");
         // console.log(w_id);
         await removeFromWishlist(showId);
-        console.log("already in wishlist")
+        console.log("already in wishlist");
         setIsInWishlist(false); // Update state
       } else {
         // If show is not in wishlist, add it
-        await addToWishlist({ _id: "", username: user.username, showId: show.id });
+        await addToWishlist({
+          _id: "",
+          username: user.username,
+          showId: show.id,
+        });
         setIsInWishlist(true); // Update state
       }
     } catch (error) {
       console.error("Error updating wishlist:", error);
       // Handle error
     }
-  };  
-  
+  };
+
   const { showId } = useParams<{ showId?: string }>();
   const { usernameWIsh } = useParams<{ usernameWIsh?: string }>();
 
@@ -143,12 +145,22 @@ function Details() {
 
   const handleDeleteReview = async (_id: any) => {
     try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this review?"
+      );
+      if (!confirmed) {
+        return;
+      }
       const status = await deleteReview(_id);
-      window.location.reload();
-    } catch (error) {}
+      setReviews((currentReviews) =>
+        currentReviews.filter((review) => review._id !== _id)
+      );
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
   };
 
-  const fetchWishlistByUsername = async (username: any ) => {
+  const fetchWishlistByUsername = async (username: any) => {
     try {
       // console.log(username);
       const wishlist = await getUserWishlist(username);
@@ -168,9 +180,11 @@ function Details() {
       //   if (item.showId == showId){
       //   // console.log(`Item ${index}:`, item.showId);}
       // });
-      console.log("wishlist")
-      const wishlistItem = wishlistData.find((item: any) => item.showId == showId);
-      console.log(wishlistItem)
+      console.log("wishlist");
+      const wishlistItem = wishlistData.find(
+        (item: any) => item.showId == showId
+      );
+      console.log(wishlistItem);
       setIsInWishlist(wishlistItem !== undefined);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -230,7 +244,6 @@ function Details() {
     rating: 0,
   });
 
-
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setNewReview({
@@ -240,16 +253,16 @@ function Details() {
       review_timestamp: new Date(),
       username: user.username,
     });
+  };
 
+  const newReviewWithTimestampToString = {
+    ...newReview,
+    review_timestamp: newReview.review_timestamp.toISOString(),
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
-    console.log(user);
-
     addNewReview(newReview);
-    // console.log("kkk")
     setNewReview({
       _id: "",
       username: "",
@@ -259,11 +272,8 @@ function Details() {
       review_timestamp: new Date(),
       rating: 0,
     });
-    console.log(user);
-    // window.location.reload();
+    setReviews([newReviewWithTimestampToString, ...reviews]);
   };
-
-  
 
   return (
     <>
@@ -376,10 +386,11 @@ function Details() {
           <div>
             <hr />
             {/* {<button onClick={handleAddToWishlist}>Add this show to my wishlist</button> } */}
-            {loggedIn && (<button onClick={handleWishlistAction}>
-  {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
-</button>) }
-
+            {loggedIn && (
+              <button onClick={handleWishlistAction}>
+                {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+              </button>
+            )}
           </div>
         </div>
 
@@ -418,7 +429,7 @@ function Details() {
                               <b className="card-title">
                                 {review.review_title}{" "}
                               </b>
-                              | <i>{review.rating} / 10 |{" "}</i>
+                              | <i>{review.rating} / 10 | </i>
                               {
                                 formatDateAndTime(review.review_timestamp)
                                   .formattedDate
@@ -446,7 +457,7 @@ function Details() {
                             </p>
                           </div>
                           <div className="text-end">
-                            <Link to={"#"}>~{review.username}</Link>
+                            <Link to={`/Profile/${review.username}`}>~{review.username}</Link>
                           </div>
                         </li>
                       </div>
@@ -536,4 +547,3 @@ function Details() {
 }
 
 export default Details;
-
