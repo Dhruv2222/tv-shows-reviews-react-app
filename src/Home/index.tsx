@@ -73,8 +73,8 @@ function Home() {
   // Get the truncated content if needed
   const getTruncatedContent = (content: string) => {
     const words = content?.split(" ");
-    if (words?.length > 50) {
-      return words?.slice(0, 50).join(" ") + "...";
+    if (words?.length > 20) {
+      return words?.slice(0, 20).join(" ") + "...";
     }
     return content;
   };
@@ -105,117 +105,115 @@ function Home() {
             </h2>
           </div>
         )}
-        <div className="container-1">
-          <div className="row row-cols-1 row-cols-md-4 g-4">
-            {currentShows.map(
-              (
-                show: {
-                  id: number;
-                  image: string;
-                  title: string;
-                  summary: string;
-                },
-                index: number
-              ) => (
-                <div
-                  className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
-                  key={index}
-                >
+
+        {currentShows.length > 0 && (
+          <div className="container-1">
+            <div className="row row-cols-1 row-cols-md-4 g-4">
+              {currentShows.map(
+                (
+                  show: {
+                    id: number;
+                    image: string;
+                    title: string;
+                    summary: string;
+                  },
+                  index: number
+                ) => (
                   <div
-                    className="card"
-                    style={{ width: "18rem", height: "100%" }}
+                    className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
+                    key={index}
                   >
-                    <Link className="card-text" to={`/Details/${show.id}`}>
-                      <img
-                        src={show.image || "images/tvshow_placeholder.png"}
-                        className="card-img-top"
-                        alt={show.title}
-                        style={{
-                          width: "100%",
-                          height: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <div className="card-body">
-                        <h3 className="card-title">
-                          <b>{show.title}</b>
-                        </h3>
-                        <p
-                          className="card-text-inner"
-                          dangerouslySetInnerHTML={{
-                            __html: expandedCards[index]
-                              ? show.summary
-                              : getTruncatedContent(show.summary),
+                    <div
+                      className="card"
+                      style={{ width: "18rem", height: "85%" }}
+                    >
+                      <Link className="card-text" to={`/Details/${show.id}`}>
+                        <img
+                          src={show.image || "images/tvshow_placeholder.png"}
+                          className="card-img-top"
+                          alt={show.title}
+                          style={{
+                            width: "100%",
+                            height: "50%",
+                            objectFit: "cover",
                           }}
-                        ></p>
-                      </div>
-                    </Link>
+                        />
+                        <div className="card-body">
+                          <h3 className="card-title">
+                            <b>{show.title}</b>
+                          </h3>
+                          <p
+                            className="card-text-inner"
+                            dangerouslySetInnerHTML={{
+                              __html: expandedCards[index]
+                                ? show.summary
+                                : getTruncatedContent(show.summary),
+                            }}
+                          ></p>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              )
-            )}
-          </div>
-          <ul className="pagination justify-content-center">
-            {/* Previous Button */}
-            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                className="page-link"
+                )
+              )}
+            </div>
+            <ul className="pagination justify-content-center">
+              {/* Previous Button */}
+              <li
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
               >
-                Previous
-              </button>
-            </li>
-
-            {/* Page Numbers */}
-            {Array(Math.ceil(shows.length / showsPerPage))
-              .fill(null)
-              .map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${
-                    currentPage === index + 1 ? "active" : ""
-                  }`}
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  className="page-link m-1"
                 >
-                  <button
-                    onClick={() => paginate(index + 1)}
-                    className="page-link"
+                  Previous
+                </button>
+              </li>
+
+              {/* Page Numbers */}
+              {Array(Math.ceil(shows.length / showsPerPage))
+                .fill(null)
+                .map((_, index) => (
+                  <li
+                    key={index}
+                    className={`page-item ${
+                      currentPage === index + 1 ? "active" : ""
+                    }`}
                   >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
+                    <button
+                      onClick={() => paginate(index + 1)}
+                      className="page-link m-1"
+                    >
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
 
-            {/* Next Button */}
-            <li
-              className={`page-item ${
-                currentPage === Math.ceil(shows.length / showsPerPage)
-                  ? "disabled"
-                  : ""
-              }`}
-            >
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                className="page-link"
+              {/* Next Button */}
+              <li
+                className={`page-item ${
+                  currentPage === Math.ceil(shows.length / showsPerPage)
+                    ? "disabled"
+                    : ""
+                }`}
               >
-                Next
-              </button>
-            </li>
-          </ul>
-        </div>
-
-        {loggedIn ? (
-          <>
-            <br />
-            <br />
-            <Reviews />
-          </>
-        ) : (
-          <>
-            <br />
-            <br />
-            <h1>Please login to see reviews</h1>
-          </>
+                <button
+                  onClick={() => paginate(currentPage + 1)}
+                  className="page-link m-1"
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </div>
         )}
+        {currentShows.length === 0 && (
+          <div className="container-1">
+            <h1 className="text-center">No Shows Found</h1>
+            <h3 className="text-center">Please try again</h3>
+          </div>
+        )}
+        {loggedIn ? <></> : <></>}
       </div>
     </>
   );
