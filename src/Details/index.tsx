@@ -408,7 +408,7 @@ function Details() {
               </div>
               <div className="col">
                 <b style={{ fontSize: "50px" }}>{avgRating} </b>
-                <b style={{ fontSize: "20px" }}>/ 10.0</b>
+                <b style={{ fontSize: "20px" }}>/ 5.0</b>
               </div>
             </div>
 
@@ -498,7 +498,32 @@ function Details() {
                       <label htmlFor="rating" className="form-label">
                         Rating
                       </label>
-                      <select
+                                              <div className="rating">
+                          {[...Array(5)].map((_, index) => {
+                            const ratingValue = 5 - index;
+                            return (
+                              <React.Fragment key={ratingValue}>
+                                <input
+                                  id={`star${ratingValue}`}
+                                  name="rating"
+                                  type="radio"
+                                  value={ratingValue}
+                                  className="radio-btn hide"
+                                  checked={newReview.rating === ratingValue}
+                                  onChange={(e) =>
+                                    setNewReview({
+                                      ...newReview,
+                                      rating: parseInt(e.target.value),
+                                    })
+                                  }
+                                />
+                                <label htmlFor={`star${ratingValue}`}>☆</label>
+                              </React.Fragment>
+                            );
+                          })}
+                          <div className="clear"></div>
+                        </div>
+                      {/* <select
                         className="form-control"
                         id="rating"
                         name="rating"
@@ -510,7 +535,7 @@ function Details() {
                           })
                         }
                       >
-                        {Array.from({ length: 21 }, (_, index) => {
+                        {Array.from({ length: 11 }, (_, index) => {
                           const value = index / 2;
                           return (
                             <option key={index} value={value}>
@@ -518,7 +543,7 @@ function Details() {
                             </option>
                           );
                         })}
-                      </select>
+                      </select> */}
                     </div>
                   </div>
                   <div className="mb-3">
