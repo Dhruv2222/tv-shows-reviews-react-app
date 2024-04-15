@@ -51,7 +51,7 @@ function App() {
             <Route path="/Landing/*" element={<Landing />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/Details/:showId" element={<Details />} />
-        <Route path="/search" element={<Search />} />
+            <Route path="/search" element={<Search />} />
 
           </Routes>
         </Provider>
