@@ -16,12 +16,40 @@ body::before {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    opacity: 0.3; /* Adjust the opacity here */
-    z-index: -1; /* Ensure the pseudo-element is behind other content */
+    opacity: 0.3;
+    /* Adjust the opacity here */
+    z-index: -1;
+    /* Ensure the pseudo-element is behind other content */
 }
 
 
-.container {
+.container-style {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(255, 255, 255);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    width: 50% !important;
+}
+
+.containerForLogin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(255, 255, 255);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    width: 50%!important;
+}
+
+.containerForRegister {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -48,7 +76,9 @@ label {
 }
 
 input[type="text"],
-input[type="password"], input[type="email"], input[type="number"] {
+input[type="password"],
+input[type="email"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -62,7 +92,7 @@ button {
     color: #fff;
     border: #ff4400;
     border-style: solid;
-    border-radius: 10px!important;
+    border-radius: 10px !important;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }

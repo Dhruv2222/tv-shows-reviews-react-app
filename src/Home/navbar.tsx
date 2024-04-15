@@ -6,6 +6,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { FaSearch } from "react-icons/fa";
 import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
+import { CgProfile } from "react-icons/cg";
+
 import { RiCameraLensFill } from "react-icons/ri";
 
 import { useDispatch } from "react-redux";
@@ -27,6 +29,11 @@ function Navbar() {
   const handleNavigate = () => {
     navigate("/Auth/Login");
   };
+
+  const handleNavigateProfile = () => {
+    navigate("/Profile");
+  };
+
   const initialUserState = {
     _id: "",
     username: "",
@@ -58,7 +65,9 @@ function Navbar() {
     if (logoutMessage === "Logged out") {
       setUser(initialUserState);
       setLoggedIn(false);
-      window.location.reload();
+      // window.location.reload();
+      // navigate("/Home");
+      navigate("/Auth/Login"); // why is this not working?
     }
   };
 
@@ -75,7 +84,7 @@ function Navbar() {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     });
   }
-
+  
   return (
     <>
       <nav
@@ -97,10 +106,13 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a
+
+                <Link
                   className="nav-link active"
                   aria-current="page"
-                  href="#"
+                  to="/Home"
+                  // remove the below onClick to make it not random
+                  onClick={() => { window.location.href = window.location.origin + '/#/Home'; window.location.reload(); }}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -111,7 +123,8 @@ function Navbar() {
                   <b>
                     <i className="navbar-title">TV Lens</i>
                   </b>
-                </a>
+                </Link>
+
               </li>
             </ul>
             <form className="d-flex" role="search">
@@ -141,12 +154,19 @@ function Navbar() {
               )}
 
               {loggedIn && (
-                <button
+
+                <div><button
+                  onClick={handleNavigateProfile}
+                  className="navbar-logout-btn ms-2"
+                >
+                  Profile <CgProfile />
+                </button><button
                   onClick={handleLogout}
                   className="navbar-logout-btn ms-2"
                 >
-                  Logout <IoIosLogOut />
-                </button>
+                    Logout <IoIosLogOut />
+                  </button></div>
+
               )}
             </form>
           </div>

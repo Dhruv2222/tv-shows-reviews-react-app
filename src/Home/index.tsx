@@ -24,6 +24,8 @@ function Home() {
   };
   const [user, setUser] = useState(initialUserState);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [wishlistShows, setWishlistShows] = useState<any[]>([]);
 
   const navigate = useNavigate();
   const getUserProfile = async () => {
@@ -33,6 +35,7 @@ function Home() {
       setLoggedIn(false);
       return;
     } else {
+      console.log("HEREEE", currentUser)
       setUser({ ...user, ...currentUser });
       setLoggedIn(true);
     }
@@ -47,17 +50,112 @@ function Home() {
     }
   };
 
+  const fetchWishlistByUsername = async (username: any) => {
+    try {
+      const fetchedWishlist = await client.getUserWishlist(username);
+      setWishlist(fetchedWishlist);
+      console.log("rfef",fetchedWishlist)
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
+  };
+
+  // const fetchWishlistByUsername = async (username: any ) => {
+  //   try {
+  //     // console.log(username);
+  //     const wishlist = await client.getUserWishlist(username);
+  //     console.log(wishlist.length);
+  //     const showIds = wishlist.map((item:any) => item.showId);
+  //     console.log(showIds);
+  //     return wishlist;
+  //   } catch (error) {
+  //     console.error("Error fetching wishlist:", error);
+  //     throw error; // Re-throw the error to handle it in the calling function if needed
+  //   }
+  // };
+
+  // const fetchWishlistShows = async () => {
+  //   console.log("Wishfdcdflist", wishlist)
+  //   const showPromises = wishlist.map((item: any) => {
+  //     return new Promise((resolve) => {
+  //       client.getShowById(item.showId, (show: any) => {
+  //         resolve(show);
+  //       });
+  //     });
+  //   });
+  
+  //   const shows = await Promise.all(showPromises);
+  //   console.log("Shows",shows)
+  //   setWishlistShows(shows);
+  // };
+
+  const fetchWishlistShows = async () => {
+    console.log("Wishlist", wishlist);
+  
+    try {
+      const showPromises = wishlist.map((item: any) => {
+        return new Promise((resolve, reject) => {
+          client.getShowById(item.showId, (show: any) => {
+            if (show) {
+              resolve(show);
+            } else {
+              reject(new Error(`Show with ID ${item.showId} not found`));
+            }
+          });
+        });
+      });
+  
+      const shows = await Promise.all(showPromises);
+      console.log("Shows", shows);
+      setWishlistShows(shows);
+    } catch (error) {
+      console.error("Error fetching wishlist shows:", error);
+    }
+  };
+
   const goToLoginPage = () => {
     navigate("/#/Auth/Login");
     return;
   };
 
-  useEffect(() => {
-    getUserProfile();
-  }, []);
+  // useEffect(() => {
+  //   getUserProfile();
+  //   if (user.username) {
+  //     fetchWishlistByUsername(user.username).then(() => {
+  //       fetchWishlistShows();
+  //     });
+  //   }
+  // }, [user.username]);
+
+
+useEffect(() => {
+  getUserProfile();
+}, []);
+
+useEffect(() => {
+  if (user.username) {
+    fetchWishlistByUsername(user.username);
+  }
+}, [user.username]);
+
+useEffect(() => {
+  if (wishlist.length > 0) {
+    fetchWishlistShows();
+  }
+}, [wishlist]);
 
   const shows = useSelector((state: any) => state.shows.shows);
-
+  const [show, setShow] = useState({
+    id: 0,
+    title: "",
+    image: "",
+    summary: "",
+    avgRuntime: "",
+    status: "",
+    language: "",
+    premiered: "",
+    rating: "",
+  });
   const [expandedCards, setExpandedCards] = useState<{
     [key: number]: boolean;
   }>({});
@@ -84,7 +182,11 @@ function Home() {
 
   const indexOfLastShow = currentPage * showsPerPage;
   const indexOfFirstShow = indexOfLastShow - showsPerPage;
-  const currentShows = shows.slice(indexOfFirstShow, indexOfLastShow);
+  const currentShows1 = shows.slice(indexOfFirstShow, indexOfLastShow);
+  console.log(wishlistShows);
+  console.log(currentShows1);
+  const currentShows = wishlistShows.concat(currentShows1);
+
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -94,6 +196,7 @@ function Home() {
       <div className="main-content">
         {loggedIn === true && (
           <div>
+
             <h2
               style={{
                 marginTop: "80px",
@@ -103,6 +206,7 @@ function Home() {
             >
               <b>Welcome, {user.username}</b>
             </h2>
+
           </div>
         )}
 
