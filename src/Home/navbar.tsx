@@ -67,7 +67,7 @@ function Navbar() {
       setLoggedIn(false);
       // window.location.reload();
       // navigate("/Home");
-      navigate("/Auth/Login"); // why is this not working?
+      // navigate("/Auth/Login"); // why is this not working?
     }
   };
 
@@ -84,7 +84,14 @@ function Navbar() {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     });
   }
-  
+
+  const handleClick = () => {
+    window.location.href = window.location.origin + "/#/Home";
+    setTimeout(() => {
+      window.location.reload();
+    }, 1); // Adjust the delay time as needed
+  };
+
   return (
     <>
       <nav
@@ -106,13 +113,11 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-
                 <Link
                   className="nav-link active"
                   aria-current="page"
                   to="/Home"
-                  // remove the below onClick to make it not random
-                  onClick={() => { window.location.href = window.location.origin + '/#/Home'; window.location.reload(); }}
+                  onClick={handleClick}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -124,7 +129,6 @@ function Navbar() {
                     <i className="navbar-title">TV Lens</i>
                   </b>
                 </Link>
-
               </li>
             </ul>
             <form className="d-flex" role="search">
@@ -154,19 +158,20 @@ function Navbar() {
               )}
 
               {loggedIn && (
-
-                <div><button
-                  onClick={handleNavigateProfile}
-                  className="navbar-logout-btn ms-2"
-                >
-                  Profile <CgProfile />
-                </button><button
-                  onClick={handleLogout}
-                  className="navbar-logout-btn ms-2"
-                >
+                <div>
+                  <button
+                    onClick={handleNavigateProfile}
+                    className="navbar-logout-btn ms-2"
+                  >
+                    Profile <CgProfile />
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="navbar-logout-btn ms-2"
+                  >
                     Logout <IoIosLogOut />
-                  </button></div>
-
+                  </button>
+                </div>
               )}
             </form>
           </div>
