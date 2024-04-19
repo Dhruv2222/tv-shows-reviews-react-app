@@ -65,7 +65,7 @@ function Navbar() {
     if (logoutMessage === "Logged out") {
       setUser(initialUserState);
       setLoggedIn(false);
-      // window.location.reload();
+      window.location.reload();
       // navigate("/Home");
       // navigate("/Auth/Login"); // why is this not working?
     }

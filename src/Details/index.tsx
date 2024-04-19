@@ -14,6 +14,7 @@ import {
   addToWishlist,
   getUserWishlist,
   removeFromWishlist,
+  addShow,
 } from "./client";
 import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../Home/reviews";
@@ -95,6 +96,7 @@ function Details() {
           showId: show.id,
         });
         setIsInWishlist(true); // Update state
+        await addShow(show); // Add show to MongoDB.
       }
     } catch (error) {
       console.error("Error updating wishlist:", error);
