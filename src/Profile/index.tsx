@@ -248,8 +248,8 @@ function Profile() {
                                                     <h4>{user.username}</h4>
                                                     <p className="text-secondary mb-1">{user.role}</p>
                                                     <p className="text-muted font-size-sm">{user.email}</p>
-                                                    <button className="btn btn-primary me-2">Follow</button>
-                                                    <button className="btn btn-outline-primary">Message</button>
+                                                    {/* <button className="btn btn-primary me-2">Follow</button>
+                                                    <button className="btn btn-outline-primary">Message</button> */}
                                                 </div>
 
                                             </div>
@@ -271,14 +271,19 @@ function Profile() {
                                                             <input type="text" className="form-control" value={editUser.email} onChange={(e) => setEditUser({ ...editUser, email: e.target.value })} />
                                                         </div>
                                                     </div>
-                                                    <div className="row mb-3">
-                                                        <div className="col-sm-3">
-                                                            <h6 className="mb-0">Phone</h6>
+
+                                                    {
+                                                        (profileId === undefined || profileId === user.username) &&
+                                                        <div className="row mb-3">
+                                                            <div className="col-sm-3">
+                                                                <h6 className="mb-0">Phone</h6>
+                                                            </div>
+                                                            <div className="col-sm-9 text-secondary">
+                                                                <input type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
+                                                            </div>
+
                                                         </div>
-                                                        <div className="col-sm-9 text-secondary">
-                                                            <input disabled={profileId !== undefined} style={{ filter: profileId === undefined ? 'none' : 'blur(4px)' }} type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
-                                                        </div>
-                                                    </div>
+                                                    }
 
                                                     <div className="row mb-3">
                                                         <div className="col-sm-3">
