@@ -95,13 +95,13 @@ function Home() {
     try {
       const showPromises = wishlist.map((item: any) => {
         return new Promise((resolve, reject) => {
-          client.getShowById(item.showId, (show: any) => {
-            if (show) {
+          client.getShowFromMongoByShowId(item.showId)
+            .then((show: any) => {
               resolve(show);
-            } else {
-              reject(new Error(`Show with ID ${item.showId} not found`));
-            }
-          });
+            })
+            .catch((error: Error) => {
+              reject(new Error(`Show with ID ${item.showId} not found: ${error.message}`));
+            });
         });
       });
 
@@ -111,7 +111,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching wishlist shows:", error);
     }
-  };
+  };  
 
   const goToLoginPage = () => {
     navigate("/#/Auth/Login");
@@ -132,11 +132,14 @@ function Home() {
     getUserProfile();
   }, []);
 
-  useEffect(() => {
-    if (user.username) {
-      fetchWishlistByUsername(user.username);
-    }
-  }, [user.username]);
+
+useEffect(() => {
+  if (user.username) {
+    fetchWishlistByUsername(user.username);
+    console.log('Wishlist-', wishlist);
+  }
+}, [user.username]);
+
 
   useEffect(() => {
     if (wishlist.length > 0) {
