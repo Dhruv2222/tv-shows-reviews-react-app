@@ -14,6 +14,7 @@ import {
   addToWishlist,
   getUserWishlist,
   removeFromWishlist,
+  addShow,
 } from "./client";
 import { useDispatch, useSelector } from "react-redux";
 import Reviews from "../Home/reviews";
@@ -61,7 +62,6 @@ function Details() {
   const getAvgShowRating = async () => {
     const avg = await getAverageRating(showId);
     setAvgRating(avg.averageRating);
-    console.log(avgRating);
   };
 
   const handleAddToWishlist = async () => {
@@ -96,6 +96,7 @@ function Details() {
           showId: show.id,
         });
         setIsInWishlist(true); // Update state
+        await addShow(show); // Add show to MongoDB.
       }
     } catch (error) {
       console.error("Error updating wishlist:", error);
@@ -143,7 +144,7 @@ function Details() {
     }
   };
 
-  const handleDeleteReview = async (_id: any) => {
+  const handleDeleteReview = async (_id: any, rating:any) => {
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this review?"
@@ -151,10 +152,21 @@ function Details() {
       if (!confirmed) {
         return;
       }
-      const status = await deleteReview(_id);
       setReviews((currentReviews) =>
         currentReviews.filter((review) => review._id !== _id)
       );
+      setAvgRating(
+        reviews.length > 1
+          ? Number(
+              (
+                ((parseFloat(String(avgRating)) * reviews.length) - rating) /
+                (reviews.length - 1)
+              ).toFixed(2)
+            )
+          : 0
+      );
+      const status = await deleteReview(_id);
+
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -175,11 +187,6 @@ function Details() {
   const fetchWishlistByUsernameShow = async (username: any, showId: any) => {
     try {
       const wishlistData = await getUserWishlist(username);
-      // console.log(wishlistData, username, showId)
-      // wishlistData.forEach((item: any, index: number) => {
-      //   if (item.showId == showId){
-      //   // console.log(`Item ${index}:`, item.showId);}
-      // });
       console.log("wishlist");
       const wishlistItem = wishlistData.find(
         (item: any) => item.showId == showId
@@ -252,6 +259,7 @@ function Details() {
       showId: show.id,
       review_timestamp: new Date(),
       username: user.username,
+      _id: new Date().getTime().toString(),
     });
   };
 
@@ -273,6 +281,16 @@ function Details() {
       rating: 0,
     });
     setReviews([newReviewWithTimestampToString, ...reviews]);
+    setAvgRating(
+      Number(
+        (
+          ((parseFloat(String(avgRating)) * reviews.length) + newReview.rating) /
+          (reviews.length + 1)
+        ).toFixed(2)
+      )
+    );
+
+    
   };
 
   return (
@@ -429,7 +447,7 @@ function Details() {
                               <b className="card-title">
                                 {review.review_title}{" "}
                               </b>
-                              | <i>{review.rating} / 10 | </i>
+                              | <i>{review.rating} / 5 | </i>
                               {
                                 formatDateAndTime(review.review_timestamp)
                                   .formattedDate
@@ -440,10 +458,10 @@ function Details() {
                                   .formattedTime
                               }
                             </div>
-                            {review.username === user.username ? (
+                            {(review.username === user.username || user.role === 'moderator') ? (
                               <div className="col-1 text-end">
                                 <button
-                                  onClick={() => handleDeleteReview(review._id)}
+                                  onClick={() => handleDeleteReview(review._id, review.rating)}
                                   className="btn btn-outline-danger mx-1"
                                 >
                                   <MdDeleteForever className="fs-4" />
@@ -492,6 +510,7 @@ function Details() {
                         name="review_title"
                         value={newReview.review_title}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="col-3">
@@ -523,27 +542,7 @@ function Details() {
                           })}
                           <div className="clear"></div>
                         </div>
-                      {/* <select
-                        className="form-control"
-                        id="rating"
-                        name="rating"
-                        value={newReview.rating}
-                        onChange={(e) =>
-                          setNewReview({
-                            ...newReview,
-                            rating: parseFloat(e.target.value),
-                          })
-                        }
-                      >
-                        {Array.from({ length: 11 }, (_, index) => {
-                          const value = index / 2;
-                          return (
-                            <option key={index} value={value}>
-                              {value}
-                            </option>
-                          );
-                        })}
-                      </select> */}
+                      
                     </div>
                   </div>
                   <div className="mb-3">
@@ -556,6 +555,7 @@ function Details() {
                       name="review_description"
                       value={newReview.review_description}
                       onChange={handleChange}
+                      required
                     ></textarea>
                   </div>
                   <button type="submit" className="mb-2">

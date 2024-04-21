@@ -54,7 +54,7 @@ function Home() {
     try {
       const fetchedWishlist = await client.getUserWishlist(username);
       setWishlist(fetchedWishlist);
-      console.log("rfef",fetchedWishlist)
+      console.log("rfef", fetchedWishlist)
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
@@ -83,7 +83,7 @@ function Home() {
   //       });
   //     });
   //   });
-  
+
   //   const shows = await Promise.all(showPromises);
   //   console.log("Shows",shows)
   //   setWishlistShows(shows);
@@ -91,27 +91,27 @@ function Home() {
 
   const fetchWishlistShows = async () => {
     console.log("Wishlist", wishlist);
-  
+
     try {
       const showPromises = wishlist.map((item: any) => {
         return new Promise((resolve, reject) => {
-          client.getShowById(item.showId, (show: any) => {
-            if (show) {
+          client.getShowFromMongoByShowId(item.showId)
+            .then((show: any) => {
               resolve(show);
-            } else {
-              reject(new Error(`Show with ID ${item.showId} not found`));
-            }
-          });
+            })
+            .catch((error: Error) => {
+              reject(new Error(`Show with ID ${item.showId} not found: ${error.message}`));
+            });
         });
       });
-  
+
       const shows = await Promise.all(showPromises);
       console.log("Shows", shows);
       setWishlistShows(shows);
     } catch (error) {
       console.error("Error fetching wishlist shows:", error);
     }
-  };
+  };  
 
   const goToLoginPage = () => {
     navigate("/#/Auth/Login");
@@ -128,21 +128,24 @@ function Home() {
   // }, [user.username]);
 
 
-useEffect(() => {
-  getUserProfile();
-}, []);
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
 
 useEffect(() => {
   if (user.username) {
     fetchWishlistByUsername(user.username);
+    console.log('Wishlist-', wishlist);
   }
 }, [user.username]);
 
-useEffect(() => {
-  if (wishlist.length > 0) {
-    fetchWishlistShows();
-  }
-}, [wishlist]);
+
+  useEffect(() => {
+    if (wishlist.length > 0) {
+      fetchWishlistShows();
+    }
+  }, [wishlist]);
 
   const shows = useSelector((state: any) => state.shows.shows);
   const [show, setShow] = useState({
@@ -205,6 +208,7 @@ useEffect(() => {
               }}
             >
               <b>Welcome, {user.username}</b>
+              <p style={{ fontSize: '16px' }}>Explore the world of TV with TVLens! Keep up with your favorite shows, manage your watchlists,<br /> and dive into reviews and ratings. All your TV needs in one convenient app!</p>
             </h2>
 
           </div>
@@ -280,9 +284,8 @@ useEffect(() => {
                 .map((_, index) => (
                   <li
                     key={index}
-                    className={`page-item ${
-                      currentPage === index + 1 ? "active" : ""
-                    }`}
+                    className={`page-item ${currentPage === index + 1 ? "active" : ""
+                      }`}
                   >
                     <button
                       onClick={() => paginate(index + 1)}
@@ -295,11 +298,10 @@ useEffect(() => {
 
               {/* Next Button */}
               <li
-                className={`page-item ${
-                  currentPage === Math.ceil(shows.length / showsPerPage)
-                    ? "disabled"
-                    : ""
-                }`}
+                className={`page-item ${currentPage === Math.ceil(shows.length / showsPerPage)
+                  ? "disabled"
+                  : ""
+                  }`}
               >
                 <button
                   onClick={() => paginate(currentPage + 1)}

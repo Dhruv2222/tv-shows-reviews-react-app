@@ -60,6 +60,11 @@ export function getShowById(showId: any, callback: (show: any) => void) {
         });
 }
 
+export const getShowFromMongoByShowId = async (showId: any) => {
+    const response = await request.get(`/shows/${showId}`);
+    return response.data;
+  };
+
 // export function getShowById(showId: any): Promise<any> {
 //     if (showId === "") {
 //         return Promise.reject("Invalid showId");

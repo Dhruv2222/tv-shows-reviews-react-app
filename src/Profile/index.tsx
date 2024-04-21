@@ -5,6 +5,23 @@ import * as client from "./client";
 import * as client_home from "../Home/client"
 import { Button, Modal } from "react-bootstrap";
 import Navbar from "../Home/navbar";
+import { getShowById, getUserWishlist } from "../Details/client"
+
+function chunk(array: any, size: any) {
+    const chunked_arr = [];
+    for (let i = 0; i < array.length; i += size) {
+        chunked_arr.push(array.slice(i, i + size));
+    }
+    console.log("umm", chunked_arr)
+    return chunked_arr;
+}
+
+interface WishlistItem {
+    _id: string;
+    username: String;
+    showId: number;
+    __v: Number;
+}
 
 interface Review {
     _id: string;
@@ -14,6 +31,22 @@ interface Review {
     review_title: string;
     showId: number;
     rating: number;
+}
+
+interface Show {
+    id: number;
+    title: string;
+    image?: string;
+    summary?: string;
+    avgRuntime?: number;
+    status?: string;
+    language?: string;
+    premiered?: string;
+    rating?: number;
+}
+
+interface Shows {
+    [key: string]: Show;
 }
 
 function Profile() {
@@ -62,6 +95,7 @@ function Profile() {
     }
 
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
     const [isLoggedIn, setLoggedIn] = useState(false);
 
     const [user, setUser] = useState({
@@ -110,13 +144,11 @@ function Profile() {
             setLoggedIn(true);
 
             setLoggedInUser(currentUser)
-            fetchUserData(currentUser.username)
+            await fetchUserData(currentUser.username)
 
         }
 
     };
-
-
 
     const fetchUserData = async (id: String | undefined) => {
         const existingUser = await client.fetchUserById(id);
@@ -128,22 +160,46 @@ function Profile() {
             console.log("ISSS", reviewData[0].reviews)
             const sortedReviews = reviewData[0].reviews.sort((a: Review, b: Review) => {
                 const dateA = new Date(a.review_timestamp);
-                const dateB = new Date(b.review_timestamp);
-
+                const dateB = new Date(b.review_timestamp)
                 return dateB.getTime() - dateA.getTime();
             });
             setReviews(sortedReviews);
         } else {
             setReviews([]);
         }
+
+        const wishListData = await getUserWishlist(existingUser.username)
+        setWishlist(wishListData)
+        const fetchShowDetails = wishListData.map(async (item: any) => {
+            if (item.showId && !wishListshows[item.showId]) {
+                return new Promise((resolve, reject) => {
+                    getShowById(item.showId, (show) => {
+                        if (show) {
+                            resolve({ showId: item.showId, show });
+                        } else {
+                            reject('Show not found');
+                        }
+                    });
+                });
+            }
+            return null; // Return null for already fetched or undefined showIds
+        });
+
+        try {
+            const showsDetails = await Promise.all(fetchShowDetails.filter(Boolean)); // Filter out nulls and wait for all promises
+            showsDetails.forEach(({ showId, show }) => {
+                setwishListShows(prev => ({ ...prev, [showId]: show }));
+            });
+            console.log("letsssss", wishListshows)
+        } catch (error) {
+            console.error("Error fetching shows", error);
+        }
     };
+
+
 
     useEffect(() => {
         getUserProfile();
-        // setProfileLoading(false);
-
-
-        console.log("Hitting effect 1")
     }, []);
 
     useEffect(() => {
@@ -155,6 +211,28 @@ function Profile() {
 
         console.log("Hitting effect 2")
     }, [profileId]);
+
+    const [shows, setShows] = useState<Shows>({});
+    useEffect(() => {
+        reviews.forEach((review) => {
+            if (review.showId && !shows[review.showId]) {
+                getShowById(review.showId, (show) => {
+                    setShows(prev => ({ ...prev, [review.showId]: show }));
+                });
+            }
+        });
+    }, [reviews]);
+
+    const [wishListshows, setwishListShows] = useState<Shows>({});
+    // useEffect(() => {
+    //     wishlist.forEach((wishlist) => {
+    //         if (wishlist.showId && !wishListshows[wishlist.showId]) {
+    //             getShowById(wishlist.showId, (show) => {
+    //                 setwishListShows(prev => ({ ...prev, [wishlist.showId]: show }));
+    //             });
+    //         }
+    //     });
+    // }, [wishlist]);
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -225,6 +303,16 @@ function Profile() {
                 console.error('Failed to update user', error);
             });
     };
+    const handleShowClick = (showId: number) => {
+        navigate(`/Details/${showId}`, { replace: true });
+    };
+
+    // const reviewGroups = chunk(reviews, 4);
+    const wishListGroups = chunk(wishlist, 4);
+
+    useEffect(() => {
+        console.log("letssseee", wishListGroups)
+    }, [wishListGroups])
 
     return (
         <div>
@@ -248,8 +336,8 @@ function Profile() {
                                                     <h4>{user.username}</h4>
                                                     <p className="text-secondary mb-1">{user.role}</p>
                                                     <p className="text-muted font-size-sm">{user.email}</p>
-                                                    <button className="btn btn-primary me-2">Follow</button>
-                                                    <button className="btn btn-outline-primary">Message</button>
+                                                    {/* <button className="btn btn-primary me-2">Follow</button>
+                                                    <button className="btn btn-outline-primary">Message</button> */}
                                                 </div>
 
                                             </div>
@@ -271,14 +359,19 @@ function Profile() {
                                                             <input type="text" className="form-control" value={editUser.email} onChange={(e) => setEditUser({ ...editUser, email: e.target.value })} />
                                                         </div>
                                                     </div>
-                                                    <div className="row mb-3">
-                                                        <div className="col-sm-3">
-                                                            <h6 className="mb-0">Phone</h6>
+
+                                                    {
+                                                        (profileId === undefined || profileId === user.username) &&
+                                                        <div className="row mb-3">
+                                                            <div className="col-sm-3">
+                                                                <h6 className="mb-0">Phone</h6>
+                                                            </div>
+                                                            <div className="col-sm-9 text-secondary">
+                                                                <input type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
+                                                            </div>
+
                                                         </div>
-                                                        <div className="col-sm-9 text-secondary">
-                                                            <input disabled={profileId !== undefined} style={{ filter: profileId === undefined ? 'none' : 'blur(4px)' }} type="text" className="form-control" value={editUser.phone_number} onChange={(e) => setEditUser({ ...editUser, phone_number: e.target.value })} />
-                                                        </div>
-                                                    </div>
+                                                    }
 
                                                     <div className="row mb-3">
                                                         <div className="col-sm-3">
@@ -309,6 +402,43 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className="d-flex ms-2 mt-2">
+                                    <h4>{profileId ? `${user.username}'s Wishlisted Movies` : "My Wishlisted Movies"}</h4>
+                                </div>
+                                {isLoggedIn && wishlist.length > 0 ? (
+                                    <div id="movieCarousel" className="carousel slide mt-3 mb-3" data-bs-ride="carousel">
+                                        <div className="carousel-inner">
+                                            {wishListGroups.map((group, index) => (
+                                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                                    <div className="d-flex">
+                                                        {group.map((wishlistItem: WishlistItem, idx: number) => (
+                                                            <div key={wishlistItem._id} className="card mx-2" style={{ width: "18rem", cursor: 'pointer' }} onClick={() => handleShowClick(wishlistItem.showId)}>
+                                                                <img src={wishListshows[wishlistItem.showId]?.image || 'default-image-url'} className="card-img-top" alt={wishListshows[wishlistItem.showId]?.title} />
+                                                                <div className="card-body">
+                                                                    <h5 className="card-title">
+                                                                        {wishListshows[wishlistItem.showId] ? wishListshows[wishlistItem.showId].title : "Loading..."}
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <button className="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+                                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span className="visually-hidden">Previous</span>
+                                        </button>
+                                        <button className="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+                                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span className="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        {isLoggedIn ? <h4>No Wishlisted movies yet</h4> : <h4>Please log in to view reviews</h4>}
+                                    </div>
+                                )}
+                                <div className="d-flex ms-2 mt-2">
                                     <h4>{profileId ? `${user.username}'s Reviews` : "My Reviews"}</h4>
                                 </div>
                                 <div className="col-lg-12 mt-2 me-4">
@@ -333,7 +463,15 @@ function Profile() {
                                                                 <span className="username"><a>{user.username}</a> <small></small></span>
                                                             </div>
                                                             <div className="timeline-content">
-                                                                <h6 className="d-flex"><a href="">{review.showId}</a></h6>
+                                                                <h6 className="d-flex">
+                                                                    {shows[review.showId] ? (
+                                                                        <span style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }} className="clickable" onClick={() => handleShowClick(review.showId)}>
+                                                                            {shows[review.showId].title}
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span>Loading...</span>
+                                                                    )}
+                                                                </h6>
                                                                 <h6 className="d-flex">{review.review_title}</h6>
                                                                 <p className="d-flex">
                                                                     {review.review_description}
@@ -360,6 +498,8 @@ function Profile() {
                                 </div>
                             </div>
                         </div>
+
+
                         <Modal show={showDelete} onHide={handleDeleteClose}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Delete Assignment</Modal.Title>
