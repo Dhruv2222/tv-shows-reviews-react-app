@@ -1,4 +1,5 @@
 import axios from "axios"
+const API_URL = process.env.REACT_APP_API_BASE + "/api"
 
 interface User {
     _id: string;
@@ -21,7 +22,8 @@ interface Review {
 }
 
 const request = axios.create({
-    baseURL: "http://localhost:4000/api",
+    // baseURL: "http://localhost:4000/api",
+    baseURL: API_URL,
     withCredentials: true,
 });
 

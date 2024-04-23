@@ -144,7 +144,7 @@ function Details() {
     }
   };
 
-  const handleDeleteReview = async (_id: any, rating:any) => {
+  const handleDeleteReview = async (_id: any, rating: any) => {
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this review?"
@@ -159,14 +159,13 @@ function Details() {
         reviews.length > 1
           ? Number(
               (
-                ((parseFloat(String(avgRating)) * reviews.length) - rating) /
+                (parseFloat(String(avgRating)) * reviews.length - rating) /
                 (reviews.length - 1)
               ).toFixed(2)
             )
           : 0
       );
       const status = await deleteReview(_id);
-
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -284,13 +283,11 @@ function Details() {
     setAvgRating(
       Number(
         (
-          ((parseFloat(String(avgRating)) * reviews.length) + newReview.rating) /
+          (parseFloat(String(avgRating)) * reviews.length + newReview.rating) /
           (reviews.length + 1)
         ).toFixed(2)
       )
     );
-
-    
   };
 
   return (
@@ -458,10 +455,16 @@ function Details() {
                                   .formattedTime
                               }
                             </div>
-                            {(review.username === user.username || user.role === 'moderator') ? (
+                            {review.username === user.username ||
+                            user.role === "moderator" ? (
                               <div className="col-1 text-end">
                                 <button
-                                  onClick={() => handleDeleteReview(review._id, review.rating)}
+                                  onClick={() =>
+                                    handleDeleteReview(
+                                      review._id,
+                                      review.rating
+                                    )
+                                  }
                                   className="btn btn-outline-danger mx-1"
                                 >
                                   <MdDeleteForever className="fs-4" />
@@ -475,7 +478,9 @@ function Details() {
                             </p>
                           </div>
                           <div className="text-end">
-                            <Link to={`/Profile/${review.username}`}>~{review.username}</Link>
+                            <Link to={`/Profile/${review.username}`}>
+                              ~{review.username}
+                            </Link>
                           </div>
                         </li>
                       </div>
@@ -517,32 +522,31 @@ function Details() {
                       <label htmlFor="rating" className="form-label">
                         Rating
                       </label>
-                                              <div className="rating">
-                          {[...Array(5)].map((_, index) => {
-                            const ratingValue = 5 - index;
-                            return (
-                              <React.Fragment key={ratingValue}>
-                                <input
-                                  id={`star${ratingValue}`}
-                                  name="rating"
-                                  type="radio"
-                                  value={ratingValue}
-                                  className="radio-btn hide"
-                                  checked={newReview.rating === ratingValue}
-                                  onChange={(e) =>
-                                    setNewReview({
-                                      ...newReview,
-                                      rating: parseInt(e.target.value),
-                                    })
-                                  }
-                                />
-                                <label htmlFor={`star${ratingValue}`}>☆</label>
-                              </React.Fragment>
-                            );
-                          })}
-                          <div className="clear"></div>
-                        </div>
-                      
+                      <div className="rating">
+                        {[...Array(5)].map((_, index) => {
+                          const ratingValue = 5 - index;
+                          return (
+                            <React.Fragment key={ratingValue}>
+                              <input
+                                id={`star${ratingValue}`}
+                                name="rating"
+                                type="radio"
+                                value={ratingValue}
+                                className="radio-btn hide"
+                                checked={newReview.rating === ratingValue}
+                                onChange={(e) =>
+                                  setNewReview({
+                                    ...newReview,
+                                    rating: parseInt(e.target.value),
+                                  })
+                                }
+                              />
+                              <label htmlFor={`star${ratingValue}`}>☆</label>
+                            </React.Fragment>
+                          );
+                        })}
+                        <div className="clear"></div>
+                      </div>
                     </div>
                   </div>
                   <div className="mb-3">
