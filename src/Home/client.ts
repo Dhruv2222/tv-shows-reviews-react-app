@@ -103,8 +103,6 @@ export const findUsersByRole = async (role: string) => {
 export const updateUser = async (user: any) => {
   const response = await request.put(`/users/${user._id}`, user);
   return response.data;
-    const response = await request.get(`/shows/${showId}`);
-    return response.data;
 };
 
 // export function getShowById(showId: any): Promise<any> {
