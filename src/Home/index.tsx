@@ -111,7 +111,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching wishlist shows:", error);
     }
-  };  
+  };
 
   const goToLoginPage = () => {
     navigate("/#/Auth/Login");
@@ -133,12 +133,12 @@ function Home() {
   }, []);
 
 
-useEffect(() => {
-  if (user.username) {
-    fetchWishlistByUsername(user.username);
-    console.log('Wishlist-', wishlist);
-  }
-}, [user.username]);
+  useEffect(() => {
+    if (user.username) {
+      fetchWishlistByUsername(user.username);
+      console.log('Wishlist-', wishlist);
+    }
+  }, [user.username]);
 
 
   useEffect(() => {
@@ -197,22 +197,34 @@ useEffect(() => {
     <>
       <Navbar />
       <div className="main-content">
-        {loggedIn === true && (
-          <div>
+        {
+          loggedIn === true ? (
+            <div>
 
-            <h2
-              style={{
+              <h2
+                style={{
+                  marginTop: "80px",
+                  marginLeft: "20px",
+                  textAlign: "center",
+                }}
+              >
+                <b>Welcome, {user.username}</b>
+                <p style={{ fontSize: '16px' }}>Explore the world of TV with TVLens! Keep up with your favorite shows, manage your watchlists,<br /> and dive into reviews and ratings. All your TV needs in one convenient app!</p>
+              </h2>
+
+            </div>
+          ) : (
+            <div>
+              <h2 style={{
                 marginTop: "80px",
                 marginLeft: "20px",
                 textAlign: "center",
-              }}
-            >
-              <b>Welcome, {user.username}</b>
-              <p style={{ fontSize: '16px' }}>Explore the world of TV with TVLens! Keep up with your favorite shows, manage your watchlists,<br /> and dive into reviews and ratings. All your TV needs in one convenient app!</p>
-            </h2>
-
-          </div>
-        )}
+              }}>
+                <p style={{ fontSize: '16px', marginTop: '90px' }}>Explore the world of TV with TVLens! Keep up with your favorite shows, manage your watchlists,<br /> and dive into reviews and ratings. All your TV needs in one convenient app!</p>
+              </h2>
+            </div>
+          )
+        }
 
         {currentShows.length > 0 && (
           <div className="container-1">

@@ -52,7 +52,6 @@ interface Shows {
 function Profile() {
     const navigate = useNavigate();
     const { profileId } = useParams();
-    const [isOwnPage, setIsOwnPage] = useState(true);
 
     const handleSave = () => {
         client.updateUser(editUser)
@@ -224,15 +223,6 @@ function Profile() {
     }, [reviews]);
 
     const [wishListshows, setwishListShows] = useState<Shows>({});
-    // useEffect(() => {
-    //     wishlist.forEach((wishlist) => {
-    //         if (wishlist.showId && !wishListshows[wishlist.showId]) {
-    //             getShowById(wishlist.showId, (show) => {
-    //                 setwishListShows(prev => ({ ...prev, [wishlist.showId]: show }));
-    //             });
-    //         }
-    //     });
-    // }, [wishlist]);
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -361,7 +351,7 @@ function Profile() {
                                                     </div>
 
                                                     {
-                                                        (profileId === undefined || profileId === user.username) &&
+                                                        (profileId === undefined || profileId === loggedInUser.username) &&
                                                         <div className="row mb-3">
                                                             <div className="col-sm-3">
                                                                 <h6 className="mb-0">Phone</h6>
