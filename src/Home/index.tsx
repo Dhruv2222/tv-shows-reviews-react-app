@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import Carousel from "./carousel";
+// import Carousel from "./carousel";
 import Navbar from "./navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Reviews from "./reviews";
 import { Link, useNavigate } from "react-router-dom";
 import * as client from "./client";
+import UserTable from "./Users";
 
 function Home() {
   const initialUserState = {
@@ -35,7 +36,7 @@ function Home() {
       setLoggedIn(false);
       return;
     } else {
-      console.log("HEREEE", currentUser)
+      console.log("HEREEE", currentUser);
       setUser({ ...user, ...currentUser });
       setLoggedIn(true);
     }
@@ -54,7 +55,7 @@ function Home() {
     try {
       const fetchedWishlist = await client.getUserWishlist(username);
       setWishlist(fetchedWishlist);
-      console.log("rfef", fetchedWishlist)
+      console.log("rfef", fetchedWishlist);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
@@ -95,12 +96,17 @@ function Home() {
     try {
       const showPromises = wishlist.map((item: any) => {
         return new Promise((resolve, reject) => {
-          client.getShowFromMongoByShowId(item.showId)
+          client
+            .getShowFromMongoByShowId(item.showId)
             .then((show: any) => {
               resolve(show);
             })
             .catch((error: Error) => {
-              reject(new Error(`Show with ID ${item.showId} not found: ${error.message}`));
+              reject(
+                new Error(
+                  `Show with ID ${item.showId} not found: ${error.message}`
+                )
+              );
             });
         });
       });
@@ -111,7 +117,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching wishlist shows:", error);
     }
-  };  
+  };
 
   const goToLoginPage = () => {
     navigate("/#/Auth/Login");
@@ -127,19 +133,16 @@ function Home() {
   //   }
   // }, [user.username]);
 
-
   useEffect(() => {
     getUserProfile();
   }, []);
 
-
-useEffect(() => {
-  if (user.username) {
-    fetchWishlistByUsername(user.username);
-    console.log('Wishlist-', wishlist);
-  }
-}, [user.username]);
-
+  useEffect(() => {
+    if (user.username) {
+      fetchWishlistByUsername(user.username);
+      console.log("Wishlist-", wishlist);
+    }
+  }, [user.username]);
 
   useEffect(() => {
     if (wishlist.length > 0) {
@@ -190,7 +193,6 @@ useEffect(() => {
   console.log(currentShows1);
   const currentShows = wishlistShows.concat(currentShows1);
 
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -199,7 +201,6 @@ useEffect(() => {
       <div className="main-content">
         {loggedIn === true && (
           <div>
-
             <h2
               style={{
                 marginTop: "80px",
@@ -208,118 +209,141 @@ useEffect(() => {
               }}
             >
               <b>Welcome, {user.username}</b>
-              <p style={{ fontSize: '16px' }}>Explore the world of TV with TVLens! Keep up with your favorite shows, manage your watchlists,<br /> and dive into reviews and ratings. All your TV needs in one convenient app!</p>
+              <p style={{ fontSize: "16px" }}>
+                Explore the world of TV with TVLens! Keep up with your favorite
+                shows, manage your watchlists,
+                <br /> and dive into reviews and ratings. All your TV needs in
+                one convenient app!
+              </p>
             </h2>
-
           </div>
         )}
 
-        {currentShows.length > 0 && (
-          <div className="container-1">
-            <div className="row row-cols-1 row-cols-md-4 g-4">
-              {currentShows.map(
-                (
-                  show: {
-                    id: number;
-                    image: string;
-                    title: string;
-                    summary: string;
-                  },
-                  index: number
-                ) => (
-                  <div
-                    className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
-                    key={index}
-                  >
-                    <div
-                      className="card"
-                      style={{ width: "18rem", height: "85%" }}
-                    >
-                      <Link className="card-text" to={`/Details/${show.id}`}>
-                        <img
-                          src={show.image || "images/tvshow_placeholder.png"}
-                          className="card-img-top"
-                          alt={show.title}
-                          style={{
-                            width: "100%",
-                            height: "50%",
-                            objectFit: "cover",
-                          }}
-                        />
-                        <div className="card-body">
-                          <h3 className="card-title">
-                            <b>{show.title}</b>
-                          </h3>
-                          <p
-                            className="card-text-inner"
-                            dangerouslySetInnerHTML={{
-                              __html: expandedCards[index]
-                                ? show.summary
-                                : getTruncatedContent(show.summary),
-                            }}
-                          ></p>
+        {user.role === "user" && (
+          <div>
+            {currentShows.length > 0 && (
+              <div className="container-1">
+                <div className="row row-cols-1 row-cols-md-4 g-4">
+                  {currentShows.map(
+                    (
+                      show: {
+                        id: number;
+                        image: string;
+                        title: string;
+                        summary: string;
+                      },
+                      index: number
+                    ) => (
+                      <div
+                        className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
+                        key={index}
+                      >
+                        <div
+                          className="card"
+                          style={{ width: "18rem", height: "85%" }}
+                        >
+                          <Link
+                            className="card-text"
+                            to={`/Details/${show.id}`}
+                          >
+                            <img
+                              src={
+                                show.image || "images/tvshow_placeholder.png"
+                              }
+                              className="card-img-top"
+                              alt={show.title}
+                              style={{
+                                width: "100%",
+                                height: "50%",
+                                objectFit: "cover",
+                              }}
+                            />
+                            <div className="card-body">
+                              <h3 className="card-title">
+                                <b>{show.title}</b>
+                              </h3>
+                              <p
+                                className="card-text-inner"
+                                dangerouslySetInnerHTML={{
+                                  __html: expandedCards[index]
+                                    ? show.summary
+                                    : getTruncatedContent(show.summary),
+                                }}
+                              ></p>
+                            </div>
+                          </Link>
                         </div>
-                      </Link>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-            <ul className="pagination justify-content-center">
-              {/* Previous Button */}
-              <li
-                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-              >
-                <button
-                  onClick={() => paginate(currentPage - 1)}
-                  className="page-link m-1"
-                >
-                  Previous
-                </button>
-              </li>
-
-              {/* Page Numbers */}
-              {Array(Math.ceil(shows.length / showsPerPage))
-                .fill(null)
-                .map((_, index) => (
+                      </div>
+                    )
+                  )}
+                </div>
+                <ul className="pagination justify-content-center">
+                  {/* Previous Button */}
                   <li
-                    key={index}
-                    className={`page-item ${currentPage === index + 1 ? "active" : ""
-                      }`}
+                    className={`page-item ${
+                      currentPage === 1 ? "disabled" : ""
+                    }`}
                   >
                     <button
-                      onClick={() => paginate(index + 1)}
+                      onClick={() => paginate(currentPage - 1)}
                       className="page-link m-1"
                     >
-                      {index + 1}
+                      Previous
                     </button>
                   </li>
-                ))}
 
-              {/* Next Button */}
-              <li
-                className={`page-item ${currentPage === Math.ceil(shows.length / showsPerPage)
-                  ? "disabled"
-                  : ""
-                  }`}
-              >
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  className="page-link m-1"
-                >
-                  Next
-                </button>
-              </li>
-            </ul>
+                  {/* Page Numbers */}
+                  {Array(Math.ceil(shows.length / showsPerPage))
+                    .fill(null)
+                    .map((_, index) => (
+                      <li
+                        key={index}
+                        className={`page-item ${
+                          currentPage === index + 1 ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          onClick={() => paginate(index + 1)}
+                          className="page-link m-1"
+                        >
+                          {index + 1}
+                        </button>
+                      </li>
+                    ))}
+
+                  {/* Next Button */}
+                  <li
+                    className={`page-item ${
+                      currentPage === Math.ceil(shows.length / showsPerPage)
+                        ? "disabled"
+                        : ""
+                    }`}
+                  >
+                    <button
+                      onClick={() => paginate(currentPage + 1)}
+                      className="page-link m-1"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
+            {currentShows.length === 0 && (
+              <div className="container-1">
+                <h1 className="text-center">No Shows Found</h1>
+                <h3 className="text-center">Please try again</h3>
+              </div>
+            )}
           </div>
         )}
-        {currentShows.length === 0 && (
-          <div className="container-1">
-            <h1 className="text-center">No Shows Found</h1>
-            <h3 className="text-center">Please try again</h3>
+
+        {user.role === "admin" && (
+          <div>
+            <h1 className="text-center">Welcome!!! You are an Admin user</h1>
+            <UserTable />
           </div>
         )}
-        {loggedIn ? <></> : <></>}
       </div>
     </>
   );
