@@ -184,15 +184,23 @@ function Home() {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [wishlistCurrentPage, setWishlistCurrentPage] = useState(1);
   const showsPerPage = 4;
+
+  const indexOfLastWishlistShow = wishlistCurrentPage * showsPerPage;
+  const indexOfFirstWishlistShow = indexOfLastWishlistShow - showsPerPage;
+  const currentWishlistShows = wishlistShows.slice(indexOfFirstWishlistShow, indexOfLastWishlistShow);
+
+// ...
 
   const indexOfLastShow = currentPage * showsPerPage;
   const indexOfFirstShow = indexOfLastShow - showsPerPage;
-  const currentShows1 = shows.slice(indexOfFirstShow, indexOfLastShow);
-  console.log(wishlistShows);
-  console.log(currentShows1);
-  const currentShows = wishlistShows.concat(currentShows1);
+  const currentShows = shows.slice(indexOfFirstShow, indexOfLastShow);
+//   console.log(wishlistShows);
+//   console.log(currentShows);
+//   const currentShows = wishlistShows.concat(currentShows1);
 
+  const paginateWishlist = (pageNumber: number) => setWishlistCurrentPage(pageNumber);
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -218,6 +226,112 @@ function Home() {
             </h2>
           </div>
         )}
+        
+        
+        {currentWishlistShows.length > 0 && (
+          <div className="container-1">
+            <h2 className="wishlist-title">My Wishlist</h2>
+            <div className="row row-cols-1 row-cols-md-4 g-4">
+              {currentWishlistShows.map(
+                (
+                  show: {
+                    id: number;
+                    image: string;
+                    title: string;
+                    summary: string;
+                  },
+                  index: number
+                ) => (
+                  <div
+                    className="col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4"
+                    key={index}
+                  >
+                    <div
+                      className="card"
+                      style={{ width: "18rem", height: "85%" }}
+                    >
+                      <Link className="card-text" to={`/Details/${show.id}`}>
+                        <img
+                          src={show.image || "images/tvshow_placeholder.png"}
+                          className="card-img-top"
+                          alt={show.title}
+                          style={{
+                            width: "100%",
+                            height: "50%",
+                            objectFit: "cover",
+                          }}
+                        />
+                        <div className="card-body">
+                          <h3 className="card-title">
+                            <b>{show.title}</b>
+                          </h3>
+                          <p
+                            className="card-text-inner"
+                            dangerouslySetInnerHTML={{
+                              __html: expandedCards[index]
+                                ? show.summary
+                                : getTruncatedContent(show.summary),
+                            }}
+                          ></p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+            <ul className="pagination justify-content-center">
+              {/* Previous Button */}
+              <li
+                className={`page-item ${wishlistCurrentPage === 1 ? "disabled" : ""}`}
+              >
+                <button
+                  onClick={() => paginate(wishlistCurrentPage - 1)}
+                  className="page-link m-1"
+                >
+                  Previous
+                </button>
+              </li>
+
+              {/* Page Numbers */}
+              {Array(Math.ceil(wishlistShows.length / showsPerPage))
+                .fill(null)
+                .map((_, index) => (
+                  <li
+                    key={index}
+                    className={`page-item ${wishlistCurrentPage === index + 1 ? "active" : ""
+                      }`}
+                  >
+                    <button
+                      onClick={() => paginateWishlist(index + 1)}
+                      className="page-link m-1"
+                    >
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+
+              {/* Next Button */}
+              <li
+                className={`page-item ${wishlistCurrentPage === Math.ceil(wishlistShows.length / showsPerPage)
+                  ? "disabled"
+                  : ""
+                  }`}
+              >
+                <button
+                  onClick={() => paginate(wishlistCurrentPage + 1)}
+                  className="page-link m-1"
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+
+
+
+
 
         {user.role === "user" && (
           <div>
