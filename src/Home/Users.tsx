@@ -74,69 +74,8 @@ export default function UserTable() {
   }, []);
   return (
     <div>
-      {/* <select
-        onChange={(e) => fetchUsersByRole(e.target.value)}
-        value={role || "USER"}
-        className="form-control w-25 float-end"
-      >
-        <option value="USER">User</option>
-        <option value="ADMIN">Admin</option>
-        <option value="FACULTY">Faculty</option>
-        <option value="STUDENT">Student</option>
-      </select> */}
-
-      <h1>User Table</h1>
-      <table className="table">
-        {/* <thead>
-          <tr>
-            <td>
-              <input
-                value={user.password}
-                onChange={(e) => setUser({ ...user, password: e.target.value })}
-              />
-              <input
-                value={user.username}
-                onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-            </td> 
-            <td>
-              <input
-                value={user.firstName}
-                onChange={(e) =>
-                  setUser({ ...user, firstName: e.target.value })
-                }
-              />
-            </td>
-            <td>
-              <input
-                value={user.lastName}
-                onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-              />
-            </td>
-             <td>
-              <select
-                value={user.role}
-                onChange={(e) => setUser({ ...user, role: e.target.value })}
-              >
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-                <option value="FACULTY">Faculty</option>
-                <option value="STUDENT">Student</option>
-              </select>
-            </td>
-            <td className="text-nowrap">
-              <BsFillCheckCircleFill
-                onClick={updateUser}
-                className="me-2 text-success fs-1 text"
-              />
-            </td>
-            <td>
-              <BsPlusCircleFill onClick={createUser} />
-            </td>
-            <th>&nbsp;</th>
-          </tr>
-        </thead> */}
-        <tbody>
+      {/* <table className="table m-4">
+        <tbody className="p-3">
           {users.map((user: any) => (
             <tr key={user._id}>
               <td>{user.username}</td>
@@ -146,15 +85,34 @@ export default function UserTable() {
                 <button onClick={() => deleteUser(user)}>
                   <BsTrash3Fill />
                 </button>
-
-                {/* <button className="btn btn-warning me-2">
-                  <BsPencil onClick={() => selectUser(user)} />
-                </button> */}
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+
+      <div className="container">
+        <div className="row p-3">
+          {users.map((user: any) => (
+            <div key={user._id} className="col-md-3 mb-3">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{user.username}</h5>
+                  <p className="card-text">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteUser(user)}
+                  >
+                    <BsTrash3Fill /> Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

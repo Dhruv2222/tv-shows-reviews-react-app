@@ -189,18 +189,22 @@ function Home() {
 
   const indexOfLastWishlistShow = wishlistCurrentPage * showsPerPage;
   const indexOfFirstWishlistShow = indexOfLastWishlistShow - showsPerPage;
-  const currentWishlistShows = wishlistShows.slice(indexOfFirstWishlistShow, indexOfLastWishlistShow);
+  const currentWishlistShows = wishlistShows.slice(
+    indexOfFirstWishlistShow,
+    indexOfLastWishlistShow
+  );
 
-// ...
+  // ...
 
   const indexOfLastShow = currentPage * showsPerPage;
   const indexOfFirstShow = indexOfLastShow - showsPerPage;
   const currentShows = shows.slice(indexOfFirstShow, indexOfLastShow);
-//   console.log(wishlistShows);
-//   console.log(currentShows);
-//   const currentShows = wishlistShows.concat(currentShows1);
+  //   console.log(wishlistShows);
+  //   console.log(currentShows);
+  //   const currentShows = wishlistShows.concat(currentShows1);
 
-  const paginateWishlist = (pageNumber: number) => setWishlistCurrentPage(pageNumber);
+  const paginateWishlist = (pageNumber: number) =>
+    setWishlistCurrentPage(pageNumber);
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -226,8 +230,7 @@ function Home() {
             </h2>
           </div>
         )}
-        
-        
+
         {currentWishlistShows.length > 0 && (
           <div className="container-1">
             <h2 className="wishlist-title">My Wishlist</h2>
@@ -283,7 +286,9 @@ function Home() {
             <ul className="pagination justify-content-center">
               {/* Previous Button */}
               <li
-                className={`page-item ${wishlistCurrentPage === 1 ? "disabled" : ""}`}
+                className={`page-item ${
+                  wishlistCurrentPage === 1 ? "disabled" : ""
+                }`}
               >
                 <button
                   onClick={() => paginate(wishlistCurrentPage - 1)}
@@ -299,8 +304,9 @@ function Home() {
                 .map((_, index) => (
                   <li
                     key={index}
-                    className={`page-item ${wishlistCurrentPage === index + 1 ? "active" : ""
-                      }`}
+                    className={`page-item ${
+                      wishlistCurrentPage === index + 1 ? "active" : ""
+                    }`}
                   >
                     <button
                       onClick={() => paginateWishlist(index + 1)}
@@ -313,10 +319,12 @@ function Home() {
 
               {/* Next Button */}
               <li
-                className={`page-item ${wishlistCurrentPage === Math.ceil(wishlistShows.length / showsPerPage)
-                  ? "disabled"
-                  : ""
-                  }`}
+                className={`page-item ${
+                  wishlistCurrentPage ===
+                  Math.ceil(wishlistShows.length / showsPerPage)
+                    ? "disabled"
+                    : ""
+                }`}
               >
                 <button
                   onClick={() => paginate(wishlistCurrentPage + 1)}
@@ -329,21 +337,17 @@ function Home() {
           </div>
         )}
 
-
-
-
-
         {user.role === "user" && (
           <div>
             {currentShows.length > 0 && (
               <div className="container-1">
                 <h2 className="wishlist-title">Shows</h2>
                 <p style={{ fontSize: "16px" }}>
-                Explore the world of TV with TVLens! Keep up with your favorite
-                shows, manage your watchlists,
-                <br /> and dive into reviews and ratings. All your TV needs in
-                one convenient app!
-              </p>
+                  Explore the world of TV with TVLens! Keep up with your
+                  favorite shows, manage your watchlists,
+                  <br /> and dive into reviews and ratings. All your TV needs in
+                  one convenient app!
+                </p>
                 <div className="row row-cols-1 row-cols-md-4 g-4">
                   {currentShows.map(
                     (
@@ -461,7 +465,7 @@ function Home() {
 
         {user.role === "admin" && (
           <div>
-            <h1 className="text-center">Welcome!!! You are an Admin user</h1>
+            <h1 className="text-center">Welcome!!! You are an Admin!!!</h1>
             <UserTable />
           </div>
         )}
