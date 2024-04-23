@@ -337,7 +337,13 @@ function Home() {
           <div>
             {currentShows.length > 0 && (
               <div className="container-1">
-                <h2 className="wishlist-title">Other Shows</h2>
+                <h2 className="wishlist-title">Shows</h2>
+                <p style={{ fontSize: "16px" }}>
+                Explore the world of TV with TVLens! Keep up with your favorite
+                shows, manage your watchlists,
+                <br /> and dive into reviews and ratings. All your TV needs in
+                one convenient app!
+              </p>
                 <div className="row row-cols-1 row-cols-md-4 g-4">
                   {currentShows.map(
                     (
