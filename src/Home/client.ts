@@ -10,9 +10,14 @@ export interface User {
   favorite_show: string;
 }
 
+const API_URL = process.env.REACT_APP_API_BASE + "/api"
+const SEARCH_URL = process.env.REACT_APP_API_BASE + "/search"
+
+
+
 const request = axios.create({
-  baseURL: "http://localhost:4000/api",
-  withCredentials: true,
+    baseURL: API_URL,
+    withCredentials: true,
 });
 
 export const logoutUser = async () => {
@@ -30,7 +35,7 @@ export const getUserProfile = async () => {
 };
 
 const searchRequest = axios.create({
-  baseURL: "http://localhost:4000/search",
+    baseURL: SEARCH_URL
 });
 
 export const search = async (searchQuery: string) => {
@@ -98,6 +103,8 @@ export const findUsersByRole = async (role: string) => {
 export const updateUser = async (user: any) => {
   const response = await request.put(`/users/${user._id}`, user);
   return response.data;
+    const response = await request.get(`/shows/${showId}`);
+    return response.data;
 };
 
 // export function getShowById(showId: any): Promise<any> {
