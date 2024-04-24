@@ -22,13 +22,11 @@ function Register() {
 
   const register = async () => {
     const newUser = await client.registerUser(user);
-    if(newUser==="Failed to register user")
-    {
+    if (newUser === "Failed to register user") {
       alert('Register failed: User already exists');
       navigate("/Auth/Register");
       return;
     }
-    console.log("hey",newUser);
     setUser({ ...user, ...newUser });
     navigate("/Home");
   };
@@ -66,9 +64,6 @@ function Register() {
     }
     if (preChecks === true) {
       event.preventDefault();
-      console.log("Username:", user.username);
-      console.log("Password:", user.password);
-      console.log("Role:", user.role);
       register();
     }
   };

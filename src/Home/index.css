@@ -2,29 +2,37 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-image: none!important;
+  background-image: none !important;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
 .container-1 {
-  text-align: center; /* Center align the text */
-  padding: 20px; /* Add padding around the content inside the container */
+  text-align: center;
+  /* Center align the text */
+  padding: 20px;
+  /* Add padding around the content inside the container */
   /* background-color: #f0f0f0; Add a light background color */
   margin-top: 4.2%;
 }
 
 .container-1 h2 {
-  font-size: 36px; /* Adjust the font size for the main title */
-  font-family: Arial, sans-serif; /* Set the font family */
-  color: #333; /* Set the color of the main title */
+  font-size: 36px;
+  /* Adjust the font size for the main title */
+  font-family: Arial, sans-serif;
+  /* Set the font family */
+  color: #333;
+  /* Set the color of the main title */
 }
 
 .container-1 h4 {
-  font-size: 20px; /* Adjust the font size for the subtitle */
-  font-family: Arial, sans-serif; /* Set the font family */
-  color: #666; /* Set the color of the subtitle */
+  font-size: 20px;
+  /* Adjust the font size for the subtitle */
+  font-family: Arial, sans-serif;
+  /* Set the font family */
+  color: #666;
+  /* Set the color of the subtitle */
 }
 
 .wishlist-title {
@@ -43,7 +51,7 @@ body {
   color: black;
   border: #ff4400;
   border-style: solid;
-  border-radius: 10px!important;
+  border-radius: 10px !important;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -60,7 +68,7 @@ body {
   color: black;
   border: #ff4400;
   border-style: solid;
-  border-radius: 10px!important;
+  border-radius: 10px !important;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -76,7 +84,7 @@ body {
   color: black;
   border: #ff4400;
   border-style: solid;
-  border-radius: 10px!important;
+  border-radius: 10px !important;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -91,10 +99,10 @@ body {
 }
 
 .navbar-title:hover {
-  text-decoration:none;
-  color: #ff4400!important;
+  text-decoration: none;
+  color: #ff4400 !important;
   font-size: 25px;
-  
+
 }
 
 .navbar-icon {
@@ -108,7 +116,7 @@ body {
 }
 
 .card-text:hover {
-  color: black!important;
+  color: black !important;
   text-decoration: none;
   text-shadow: #333;
   /* font-weight: bold; */
@@ -123,7 +131,7 @@ body {
 
   padding: 1px 2px;
   background-color: white;
-  color: gray!important;
+  color: gray !important;
   text-decoration: underline;
   border-style: none;
   color: black;
@@ -133,7 +141,7 @@ body {
 }
 
 .home-show-more-btn:hover {
-  background-color:  #f2bf9fcb;
+  background-color: #f2bf9fcb;
 }
 
 .home-card {

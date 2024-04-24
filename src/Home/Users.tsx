@@ -21,7 +21,6 @@ export default function UserTable() {
   };
 
   const selectUser = async (user: User) => {
-    console.log(user);
     try {
       const u = await client.findUserById(user._id);
       setUser(u);

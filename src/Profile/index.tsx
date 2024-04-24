@@ -12,7 +12,6 @@ function chunk(array: any, size: any) {
     for (let i = 0; i < array.length; i += size) {
         chunked_arr.push(array.slice(i, i + size));
     }
-    console.log("umm", chunked_arr)
     return chunked_arr;
 }
 
@@ -52,7 +51,6 @@ interface Shows {
 function Profile() {
     const navigate = useNavigate();
     const { profileId } = useParams();
-    const [isOwnPage, setIsOwnPage] = useState(true);
 
     const handleSave = () => {
         client.updateUser(editUser)
@@ -157,7 +155,6 @@ function Profile() {
 
         const reviewData = await client.fetchReviewsById(existingUser.username);
         if (reviewData.length > 0 && reviewData[0].reviews) {
-            console.log("ISSS", reviewData[0].reviews)
             const sortedReviews = reviewData[0].reviews.sort((a: Review, b: Review) => {
                 const dateA = new Date(a.review_timestamp);
                 const dateB = new Date(b.review_timestamp)
@@ -190,7 +187,6 @@ function Profile() {
             showsDetails.forEach(({ showId, show }) => {
                 setwishListShows(prev => ({ ...prev, [showId]: show }));
             });
-            console.log("letsssss", wishListshows)
         } catch (error) {
             console.error("Error fetching shows", error);
         }
@@ -209,7 +205,6 @@ function Profile() {
 
         }
 
-        console.log("Hitting effect 2")
     }, [profileId]);
 
     const [shows, setShows] = useState<Shows>({});
@@ -224,15 +219,6 @@ function Profile() {
     }, [reviews]);
 
     const [wishListshows, setwishListShows] = useState<Shows>({});
-    // useEffect(() => {
-    //     wishlist.forEach((wishlist) => {
-    //         if (wishlist.showId && !wishListshows[wishlist.showId]) {
-    //             getShowById(wishlist.showId, (show) => {
-    //                 setwishListShows(prev => ({ ...prev, [wishlist.showId]: show }));
-    //             });
-    //         }
-    //     });
-    // }, [wishlist]);
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -289,7 +275,6 @@ function Profile() {
     };
 
     const handleEditReview = () => {
-        console.log(selectedReview)
         client.updateReview(selectedReview)
             .then((response) => {
                 console.log('Update successful', response);
@@ -311,7 +296,6 @@ function Profile() {
     const wishListGroups = chunk(wishlist, 4);
 
     useEffect(() => {
-        console.log("letssseee", wishListGroups)
     }, [wishListGroups])
 
     return (
@@ -361,7 +345,7 @@ function Profile() {
                                                     </div>
 
                                                     {
-                                                        (profileId === undefined || profileId === user.username) &&
+                                                        (profileId === undefined || profileId === loggedInUser.username) &&
                                                         <div className="row mb-3">
                                                             <div className="col-sm-3">
                                                                 <h6 className="mb-0">Phone</h6>

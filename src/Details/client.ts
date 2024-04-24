@@ -38,11 +38,8 @@ export const getReviewsByShowId = async (showId: any) => {
 };
 
 export const addNewReview = async (newReview: any) => {
-  console.log(newReview);
   const response = await request.post("/reviews", newReview);
-  console.log(response.data);
   return response.data;
-  // console.log(response.data)
 };
 
 export const getUserProfile = async () => {
@@ -66,9 +63,7 @@ export const getAverageRating = async (showId: any) => {
 
 export const addToWishlist = async (newWishList: any) => {
   try {
-    console.log(newWishList);
     const response = await request.post("/wishlist", newWishList);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error adding show to wishlist:", error);
@@ -77,15 +72,12 @@ export const addToWishlist = async (newWishList: any) => {
 };
 
 export const getUserWishlist = async (username: any) => {
-  console.log(username);
   const response = await request.get(`/wishlist/${username}`);
-  console.log(response.data);
   return response.data;
 };
 
 export const removeFromWishlist = async (wishlistId: any) => {
   try {
-    console.log(wishlistId);
     const response = await request.delete(`/wishlist/${wishlistId}`);
     //   const response = await request.delete(`/wishlist/${wishlistId}`);
     return response.data; // Return the response data

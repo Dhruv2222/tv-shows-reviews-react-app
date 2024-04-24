@@ -39,8 +39,6 @@ function Login() {
 
     const handleLogin = (event: any) => {
         event.preventDefault();
-        // console.log('Username:', user.username);
-        // console.log('Password:', user.password);
         setLoggedIn(true);
         login();
     }
@@ -48,7 +46,7 @@ function Login() {
     return (
         <>
 
-        <Navbar/>
+            <Navbar />
             <div className="containerForLogin">
 
                 <h2>Login</h2>

@@ -16,8 +16,8 @@ const SEARCH_URL = process.env.REACT_APP_API_BASE + "/search"
 
 
 const request = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
+  baseURL: API_URL,
+  withCredentials: true,
 });
 
 export const logoutUser = async () => {
@@ -35,7 +35,7 @@ export const getUserProfile = async () => {
 };
 
 const searchRequest = axios.create({
-    baseURL: SEARCH_URL
+  baseURL: SEARCH_URL
 });
 
 export const search = async (searchQuery: string) => {
@@ -44,9 +44,7 @@ export const search = async (searchQuery: string) => {
 };
 
 export const getUserWishlist = async (username: any) => {
-  console.log(username);
   const response = await request.get(`/wishlist/${username}`);
-  console.log(response.data);
   return response.data;
 };
 

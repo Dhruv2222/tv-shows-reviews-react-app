@@ -34,19 +34,17 @@ export const fetchUserById = async (id: String | undefined) => {
 
 export const fetchReviewsById = async (id: String | undefined) => {
     const response = await request.get(`/users/reviews/${id}`);
-    console.log("hello", response.data)
     return response.data;
 }
 
 export const deleteReviewById = async (id: String | undefined) => {
-    console.log(id)
     const response = await request.delete(`/reviews/${id}`);
     return response.data;
 }
 
 
 export const updateUser = async (user: User) => {
-    const response = await request.put(`/users/${user._id}`, user);
+    const response = await request.put(`/users/${user.username}`, user);
     return response.data;
 }
 

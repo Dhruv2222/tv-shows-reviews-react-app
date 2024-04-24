@@ -35,7 +35,6 @@ function Details() {
     role: "user",
     favorite_TVshow: "",
   };
-  // console.log("hii")
   const [user, setUser] = useState(initialUserState);
   const [loggedIn, setLoggedIn] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
@@ -82,11 +81,7 @@ function Details() {
     try {
       if (isInWishlist) {
         // If show is already in wishlist, remove it
-        // const w_id = fetchWishlistByUsernameShow1(user.username, showId)
-        // console.log("fvsdfsv");
-        // console.log(w_id);
         await removeFromWishlist(showId);
-        console.log("already in wishlist");
         setIsInWishlist(false); // Update state
       } else {
         // If show is not in wishlist, add it
@@ -158,11 +153,11 @@ function Details() {
       setAvgRating(
         reviews.length > 1
           ? Number(
-              (
-                (parseFloat(String(avgRating)) * reviews.length - rating) /
-                (reviews.length - 1)
-              ).toFixed(2)
-            )
+            (
+              (parseFloat(String(avgRating)) * reviews.length - rating) /
+              (reviews.length - 1)
+            ).toFixed(2)
+          )
           : 0
       );
       const status = await deleteReview(_id);
@@ -173,9 +168,7 @@ function Details() {
 
   const fetchWishlistByUsername = async (username: any) => {
     try {
-      // console.log(username);
       const wishlist = await getUserWishlist(username);
-      // console.log(wishlist);
       return wishlist;
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -186,11 +179,9 @@ function Details() {
   const fetchWishlistByUsernameShow = async (username: any, showId: any) => {
     try {
       const wishlistData = await getUserWishlist(username);
-      console.log("wishlist");
       const wishlistItem = wishlistData.find(
         (item: any) => item.showId == showId
       );
-      console.log(wishlistItem);
       setIsInWishlist(wishlistItem !== undefined);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
@@ -200,7 +191,6 @@ function Details() {
   useEffect(() => {
     getShowById(showId, (show) => {
       setShow(show);
-      console.log(show);
     });
 
     fetchReviewsByShowId(showId);
@@ -361,7 +351,7 @@ function Details() {
                       <h5>
                         {show.rating !== null ? `${show.rating} /10.0` : "-"}
                       </h5>
-                      <h5>{}</h5>
+                      <h5>{ }</h5>
                     </div>
                   </div>
                   <hr />
@@ -456,7 +446,7 @@ function Details() {
                               }
                             </div>
                             {review.username === user.username ||
-                            user.role === "moderator" ? (
+                              user.role === "moderator" ? (
                               <div className="col-1 text-end">
                                 <button
                                   onClick={() =>
