@@ -94,6 +94,8 @@ function Navbar() {
 
   return (
     <>
+
+
       <nav
         className="navbar navbar-expand-lg bg-body-tertiary fixed-top"
         data-bs-theme="dark"
@@ -133,7 +135,7 @@ function Navbar() {
             </ul>
             <form className="d-flex" role="search">
               <input
-                className="form-control me-2"
+                className="form-control me-2 w-50"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
