@@ -45,29 +45,31 @@ function Login() {
 
     return (
         <>
+            <div>
+                <Navbar />
+                <div className="containerForLogin">
 
-            <Navbar />
-            <div className="containerForLogin">
+                    <h2>Login</h2>
+                    <hr />
+                    <form onSubmit={handleLogin}>
+                        <div className="form-group">
+                            <label htmlFor="username">Username:</label>
+                            <input type="text" placeholder="Enter your username" id="username" name="username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })} required />
+                        </div>
 
-                <h2>Login</h2>
-                <hr />
-                <form onSubmit={handleLogin}>
-                    <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" placeholder="Enter your username" id="username" name="username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })} required />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password:</label>
+                            <input type="password" placeholder="Enter your password" id="password" name="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} required />
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" placeholder="Enter your password" id="password" name="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} required />
-                    </div>
-
-                    <div className="form-group">
-                        <button type="submit"><b>Login</b></button>
-                    </div>
-                </form>
-                <Link to={"/Auth/Register"}>Don't have an account? Register</Link>
+                        <div className="form-group">
+                            <button type="submit"><b>Login</b></button>
+                        </div>
+                    </form>
+                    <Link to={"/Auth/Register"}>Don't have an account? Register</Link>
+                </div>
             </div>
+
         </>
     );
 

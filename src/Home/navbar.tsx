@@ -135,12 +135,12 @@ function Navbar() {
             </ul>
             <form className="d-flex" role="search">
               <input
-                className="form-control me-2 w-50"
+                className="form-control me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
                 value={searchQuery}
-                style={{ width: "400px" }}
+                style={{ width: "125px" }}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
