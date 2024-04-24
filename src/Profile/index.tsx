@@ -195,17 +195,24 @@ function Profile() {
 
 
     useEffect(() => {
-        getUserProfile();
-    }, []);
-
-    useEffect(() => {
+        console.log("xxxx", profileId)
+        // getUserProfile();
         fetchUserData(profileId);
+        setLoggedIn(true)
         if (!profileId) {
             getUserProfile();
-
         }
+    }, []);
 
-    }, [profileId]);
+    // useEffect(() => {
+    //     // getUserProfile();
+    //     fetchUserData(profileId);
+    //     if (!profileId) {
+    //         getUserProfile();
+
+    //     }
+
+    // }, [profileId]);
 
     const [shows, setShows] = useState<Shows>({});
     useEffect(() => {
@@ -388,7 +395,7 @@ function Profile() {
                                 <div className="d-flex ms-2 mt-2">
                                     <h4>{profileId ? `${user.username}'s Wishlisted Movies` : "My Wishlisted Movies"}</h4>
                                 </div>
-                                {isLoggedIn && wishlist.length > 0 ? (
+                                {wishlist.length > 0 ? (
                                     <div id="movieCarousel" className="carousel slide mt-3 mb-3" data-bs-ride="carousel">
                                         <div className="carousel-inner">
                                             {wishListGroups.map((group, index) => (
@@ -431,7 +438,7 @@ function Profile() {
                                             {isLoggedIn && reviews.length == 0 && <div>
                                                 <h4>No reviews added yet</h4>
                                             </div>}
-                                            {isLoggedIn && reviews.length > 0 && <ul className="timeline">
+                                            {reviews.length > 0 && <ul className="timeline">
                                                 {reviews.map((review: Review) => (
                                                     <li key={parseInt(review._id)} >
                                                         <div className="timeline-time">

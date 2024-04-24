@@ -35,9 +35,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/Home" />} />
             <Route path="/Auth/*" element={<Auth />} />
-
+            <Route path="/Profile/:profileId" element={<Profile key="some_unique_value" />} />
             <Route path="/Profile/*" element={<Profile />} />
-            <Route path="/Profile/:profileId" element={<Profile />} />
+
             {/* <Route path="/Profile/*" element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile />
