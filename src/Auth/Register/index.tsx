@@ -22,6 +22,13 @@ function Register() {
 
   const register = async () => {
     const newUser = await client.registerUser(user);
+    if(newUser==="Failed to register user")
+    {
+      alert('Register failed: User already exists');
+      navigate("/Auth/Register");
+      return;
+    }
+    console.log("hey",newUser);
     setUser({ ...user, ...newUser });
     navigate("/Home");
   };
